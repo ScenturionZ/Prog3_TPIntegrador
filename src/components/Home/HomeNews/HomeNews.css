@@ -1,0 +1,20 @@
+.novedades{
+    background-color: var(--color-lessDarkBlue);
+    text-align: left;
+    color: white;
+    vertical-align: middle;
+}
+.novedades p{
+    text-align: left;
+    font-size: 1.5rem;
+    color: #ffffff; 
+    vertical-align: middle; 
+}
+
+.novedades:first-child{
+    padding: 1rem;
+}
+
+.img-novedades{
+    float: left;
+}
