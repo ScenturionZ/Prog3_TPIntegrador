@@ -1,3 +1,15 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;1,400&display=swap');
+
+:root {
+  --color-pink: rgb(200, 29, 216);
+  --color-darkBlue: rgb(0, 50, 98);
+  --color-lessDarkBlue: rgb(23, 94, 161);
+  --color-blue: rgb(70, 133, 216);
+  --color-grey: rgb(144, 144, 144);
+  --color-red: rgb(241, 78, 78);
+  --color-darkGrey: rgb(37, 37, 37);
+}
+
 .App {
   text-align: center;
 }

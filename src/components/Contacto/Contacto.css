@@ -1,0 +1,11 @@
+.ol-contacto img{
+    height: 2rem !important;
+}
+
+hr.vertical {
+    height: 70vh;
+    width: 0;
+    border: 0.2rem dashed var(--color-darkGrey);
+    margin: 50% 50%;
+    opacity: 1;
+}
