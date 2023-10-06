@@ -6,9 +6,11 @@ function HomeNews() {
     const [news, setNews] = useState([]);
 
     useEffect(() => {
+        //const API_URL = "https://newsapi.org/v2/top-headlines?sources=bbc-news&apiKey="
         const API_URL = "https://newsapi.org/v2/top-headlines?country=ar&category=business&pageSize=12&apiKey=";
-        const API_KEY = "41c0ed79d3ef46d69feb8b3bd014e551";
-        const url = API_URL + API_KEY;
+        //const API_KEY = "41c0ed79d3ef46d69feb8b3bd014e551";
+        console.log(process.env.REACT_APP_API_NEWS_KEY);
+        const url = API_URL + process.env.REACT_APP_API_NEWS_KEY;
 
         fetch(url).then(res => {
             res.json().then((data) => {
