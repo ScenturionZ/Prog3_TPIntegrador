@@ -1,13 +1,15 @@
 import './Home.css';
-import React from 'react';
+
+import Carrousel from './HomeCarrousel/Carrousel';
 import Col from 'react-bootstrap/Col';
-import Row from 'react-bootstrap/Row';
 import HomeNews from './HomeNews/HomeNews';
+import React from 'react';
+import Row from 'react-bootstrap/Row';
 
 function Home() {
     return (
         <>
-            <h1>Sistema administrativo para Bedelia 🏠</h1>
+            <Carrousel />
             <br />
             <Row className="row justify-content-between w-100">
                 <Col>
