@@ -5,6 +5,10 @@ const bodyParser = require('body-parser');
 
 const v1Public = require("./v1/routes/public");
 const v1Estudiante = require("./v1/routes/estudiante");
+const v1Nacionalidad = require("./v1/routes/nacionalidad");
+const v1Carrera = require("./v1/routes/carrera");
+const v1Materia = require("./v1/routes/materia");
+const v1Usuario = require("./v1/routes/usuario");
 
 const port = process.env.REACT_APP_API_PORT || 5000;
 
@@ -17,7 +21,11 @@ app.use(bodyParser.urlencoded({
 }));
 
 app.use("/api/v1/publico", v1Public);
-app.use("/api/v1/estudiante", v1Estudiante);
+app.use("/api/v1", v1Estudiante);
+app.use("/api/v1", v1Nacionalidad);
+app.use("/api/v1", v1Carrera);
+app.use("/api/v1", v1Materia);
+app.use("/api/v1", v1Usuario);
 
 //API PORT
 app.listen(port,  function (err) {

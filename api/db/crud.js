@@ -1,5 +1,8 @@
 require('dotenv').config();
+
 const mysql = require("mysql2/promise");
+
+const moment = require("moment");
 
 //CONEXION CON LA DB
 const conn = mysql.createPool({
@@ -9,40 +12,156 @@ const conn = mysql.createPool({
 	database: process.env.REACT_APP_DB_NAME
 });
 
-async function create(table, data, idField){
-    const query = "INSERT INTO " + table + " SET ?";
-    const [newObj] = await conn.query(query, data);
-    return findById(table, newObj.insertId, idField);
+async function create(table, data){
+    var count = Object.keys(data).length;
+    console.log(count);
+    return data.length;
+    if(data.length){
+        const query = "INSERT INTO " + table + " SET ?";
+        const [newObj] = await conn.query(query, data);
+        return findById(table, newObj.insertId);
+    }else{
+        console.log("asdf");
+    }
 }
 
 async function findAll(table){
     const query = "SELECT * FROM " + table + " WHERE activo = 1";
-    const [result] = await conn.query(query);
-    return result;
+    const [data] = await conn.query(query);
+    const result = await checkData(data);
+    return checkTypes(result);
 }
 
-async function findById(table, id, idField){
-    const query = "SELECT * FROM " + table + " WHERE " + idField + " = " + id + " AND activo = 1";
-    const [result] = await conn.query(query);
-    return result;
+async function findAllData(table){
+    const query = "SELECT * FROM " + table;
+    const [data] = await conn.query(query);
+    let result = await checkData(data);
+    return checkTypes(result);
 }
 
-async function logicalDelete(table, value, id, idField){
-    const query = "UPDATE " + table + " SET activo = " + value + " WHERE " + idField + " = " + id;
+async function findById(table, id){
+    const query = "SELECT * FROM " + table + " WHERE id = " + id + " AND activo = 1";
+    const [data] = await conn.query(query);
+    if(data.length){
+        let result = await checkData(data);
+        return checkTypes(result);
+    }
+    return data;
+}
+
+async function findDataById(table, id){
+    const query = "SELECT * FROM " + table + " WHERE id = " + id;
+    const [data] = await conn.query(query);
+    if(data.length){
+        let result = await checkData(data);
+        return checkTypes(result);
+    }
+    return data;
+}
+
+async function logicalDelete(table, value, id){
+    const query = "UPDATE " + table + " SET activo = " + value + " WHERE id = " + id;
     await conn.query(query)
 }
 
-async function update(table, data, id, idField){
-    const query = "UPDATE " + table + " SET ? WHERE " + idField + " = " + id;
+async function update(table, data, id){
+    const query = "UPDATE " + table + " SET ? WHERE id = " + id;
     const [newObj] = await conn.query(query, data);
-    return findById(table, id, idField);
+    return findById(table, id);
 }
 
+
+async function runSql(q){
+    const [res] = await conn.query(q);
+    return res;
+}
+
+async function checkData(data){
+    let result = data;
+    let cols = Object.keys(result);
+    if(Array.isArray(result)){
+        cols = Object.keys(result[0]);
+    }
+    let tables = getTableCols(cols);    
+    if(!tables.length){
+        return result;
+    }
+    let removeList = [];
+    for (let e of result) {
+        for (const t of tables) {
+            const valId = e["id" + t];
+            delete e["id" + t];
+            let element;
+            try {
+                [element] = await findById(t, valId);
+                if(element){
+                    let colsE = Object.keys(element);
+                    for (const colE of colsE) {
+                        if(colE === "id"){
+                            e[t.toLowerCase() + "ID"] = element[colE];
+                        }else{
+                            e[colE] = element[colE];
+                        }
+                    }
+                }else{
+                    removeList.push(result.indexOf(e));
+                }
+            } catch (error) {
+                if(valId){
+                    [element] = await findDataById(t, valId);
+                    if(t === "Nacionalidad"){
+                        e[t.toLowerCase()] = element.pais
+                    }else{
+
+                        e[t.toLowerCase().charAt(0) + t.substring(1)] = element.descripcion
+                    }
+                }else{
+                    result.splice(result.indexOf(e),1)
+                }
+            }
+        }
+        delete e["activo"];
+    }
+    for (let i = 0; i < removeList.length; i++) {
+        delete result[removeList[i]];
+    }
+    result = result.filter(function (e) {
+        return e != null;
+    });
+    return checkData(result);
+}
+
+function checkTypes(data){
+    for (let element of data) {
+        if(element){
+            for(let f of Object.keys(element)){
+                //TIPOS DATE
+                if(moment(element[f], moment.ISO_8601).isValid()){
+                    element[f] = moment(element[f]).format('DD-MM-YYYY');
+                }
+            }
+        }
+    }
+    return data;
+}
+
+function getTableCols(cols){
+    let tables = [];
+    for (const col of cols) {
+        if(col.startsWith("id") && col !== "id"){
+            tables.push(col.replace("id", ""));
+        }
+    }
+    return tables;
+}
 
 module.exports = {
     create,
     findAll,
     findById,
     update,
-    logicalDelete
+    logicalDelete,
+    findAllData,
+    findDataById,
+    runSql
 };
