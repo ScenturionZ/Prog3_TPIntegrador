@@ -5,7 +5,7 @@ const findNacionalidadById = async(req, res) => {
     try {
         const id = req.params.id;
         if(!id){
-            res.status(404).json({Estado : msj.ESTADO_ERROR, msj : "FALTA ID DE NACIONALIDAD"});
+            res.status(404).json({Estado : msj.ESTADO_ERROR, msj : msj.FALTA_ID_NACIONALIDAD});
         }
 
         const nac = await nacionalidadDB.findNacionalidadById(id);

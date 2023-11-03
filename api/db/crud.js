@@ -13,16 +13,15 @@ const conn = mysql.createPool({
 });
 
 async function create(table, data){
-    var count = Object.keys(data).length;
-    console.log(count);
-    return data.length;
-    if(data.length){
-        const query = "INSERT INTO " + table + " SET ?";
-        const [newObj] = await conn.query(query, data);
-        return findById(table, newObj.insertId);
-    }else{
-        console.log("asdf");
-    }
+    const query = "INSERT INTO " + table + " SET ?";
+    const [newObj] = await conn.query(query, data);
+    return findById(table, newObj.insertId);
+}
+
+async function createData(table, data){
+    const query = "INSERT INTO " + table + " SET ?";
+    const [newObj] = await conn.query(query, data);
+    return findDataById(table, newObj.insertId);
 }
 
 async function findAll(table){
@@ -70,9 +69,17 @@ async function update(table, data, id){
     return findById(table, id);
 }
 
+async function updateData(table, data, id){
+    const query = "UPDATE " + table + " SET ? WHERE id = " + id;
+    const [newObj] = await conn.query(query, data);
+    return findDataById(table, id);
+}
 
 async function runSql(q){
     const [res] = await conn.query(q);
+    /*if(res.length){
+        return checkData(res);
+    }*/
     return res;
 }
 
@@ -163,5 +170,7 @@ module.exports = {
     logicalDelete,
     findAllData,
     findDataById,
+    createData,
+    updateData,
     runSql
 };

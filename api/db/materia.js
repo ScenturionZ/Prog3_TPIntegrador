@@ -25,11 +25,25 @@ const updateMateria = async(materia, id) => {
     return crud.update(TABLE_NAME, materia, id);
 }
 
+const findCarrerasAsociadas = async(id) => {
+    const query = "SELECT c.* FROM carreramateria cm " +
+    "INNER JOIN carrera c ON c.id = cm.idCarrera " +
+    "INNER JOIN materia m ON m.id = cm.idMateria " +
+    "WHERE m.id = " + id + " AND c.activo = 1";
+    const result = await crud.runSql(query);
+    if(result.length){
+        return result;
+    }
+
+    return undefined;
+}
+
 module.exports = {
     findMateriaById,
     findAllMaterias,
     deleteMateria,
     activeMateria,
     createMateria,
-    updateMateria
+    updateMateria,
+    findCarrerasAsociadas
 };

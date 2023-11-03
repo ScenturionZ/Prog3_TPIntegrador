@@ -53,15 +53,16 @@ const activeUsuario = async(req, res) => {
 
 const createUsuario = async(req, res) => {
     try {
-        const {correo, pass, nombre, apellido, tipoUsuario} = req.body;
-
-        if(!correo || !pass || !nombre || !apellido || tipoUsuario){
+        
+        const {correoElectronico, clave, nombre, apellido, tipoUsuario} = req.body;
+        
+        if(!correoElectronico || !clave || !nombre || !apellido || !tipoUsuario){
             res.status(404).json({Estado : msj.ESTADO_ERROR, msj : msj.FALTAN_DATOS});
         }
         
         const newUsuario = {
-            correoElectronico: correo,
-            clave: await encrypt.hashPass(pass),
+            correoElectronico: correoElectronico,
+            clave: await encrypt.hashPass(clave),
             nombre: nombre,
             apellido: apellido,
             idTipoUsuario: tipoUsuario
@@ -78,7 +79,7 @@ const updateUsuario = async(req, res) => {
     try {
         const {correo, pass, nombre, apellido, tipoUsuario} = req.body;
 
-        if(!correo || !pass || !nombre || !apellido || tipoUsuario){
+        if(!correo || !pass || !nombre || !apellido || !tipoUsuario){
             res.status(404).json({Estado : msj.ESTADO_ERROR, msj : msj.FALTAN_DATOS});
         }
         
@@ -105,13 +106,13 @@ const updateUsuario = async(req, res) => {
 
 const checkUsuario = async(req, res) => {
     try {
-        const {correo, pass} = req.body;
+        const {correoElectronico, clave} = req.body;
 
-        if(!correo || !pass){
+        if(!correoElectronico || !clave){
             res.status(404).json({Estado : msj.ESTADO_ERROR, msj : msj.FALTAN_DATOS});
         }
         
-        const result = await usuarioDB.checkUsuario(correo, pass);
+        const result = await usuarioDB.checkUsuario(correoElectronico, clave);
         res.status(200).json({Estado : msj.ESTADO_OK, dato : result});
 
     } catch (error) {

@@ -44,7 +44,6 @@ function ContactoForm() {
         if(form.user && form.mail && form.msj){
             axios.post(urlSender, form)
             .then(res => {
-                console.log(res);
                 alert(res.data.message);
                 setForm({
                     user:"", 
