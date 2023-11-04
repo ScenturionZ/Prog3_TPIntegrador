@@ -3,7 +3,7 @@ import { useContext, useEffect, useState } from "react";
 
 import { UsersContext } from "../../context/UserContext";
 import axios from "axios";
-import { getTypeByValue } from "../../Model/TypeUser";
+import { getTypeByValue } from "../../Enum/TypeUser";
 import { useNavigate } from "react-router-dom";
 
 function InicioSesion() {

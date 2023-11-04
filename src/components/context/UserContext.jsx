@@ -1,6 +1,6 @@
 import React, { createContext, useEffect, useState } from 'react';
 
-import {Usuario} from '../Model/Usuario';
+import {Usuario} from '../Enum/Usuario';
 import axios from 'axios';
 
 //Contexto
