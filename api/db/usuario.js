@@ -7,7 +7,7 @@ const findUsuarioById = async(id) => {
 }
 
 const findAllUsuarios = async() => {
-    return crud.findAll(TABLE_NAME);
+    return crud.findAllData(TABLE_NAME);
 }
 
 const deleteUsuario = async(id) => {
@@ -27,7 +27,7 @@ const updateUsuario = async(usuario, id) => {
 }
 
 const checkUsuario = async(username, password) => {
-    const query = "SELECT * FROM usuario WHERE correoElectronico = '" + username + "'";
+    const query = "SELECT * FROM usuario WHERE correoElectronico = '" + username + "' AND activo = 1";
     const user = await crud.runSql(query);
     if(user.length){
         const check = await encrypt.comparePass(password, user[0].clave);

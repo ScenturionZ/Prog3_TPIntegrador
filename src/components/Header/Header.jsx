@@ -1,14 +1,52 @@
 import './Header.css';
 
 import { Container, Image, Nav, NavDropdown, Navbar } from 'react-bootstrap';
+import { useContext, useState } from 'react';
 
 import { LinkContainer } from 'react-router-bootstrap'
-import { useState } from 'react';
+import { UsersContext } from "../context/UserContext";
+import { useNavigate } from "react-router-dom";
 
 function Header() {
-	const [type, setType] = useState('');
-	const [isLogged, setIsLogged] = useState(false);
+	const { User, setUser, Authenticated, setAuthenticated } = useContext(UsersContext);
+	const navigate = useNavigate();
+	
+	const handleSignOut = () => {
+		setAuthenticated(false)
+		setUser({
+		id: " ",
+		nombre: " ",
+		apellido: " ",
+		correoElectronico: " ",
+		idTipoUsuario: " "
+	})
+	navigate("/");
+};
+	
+	const handleClick = (e) => {
+		console.log(e)
+		const { name } = e.target;
+        navigate(`/${name}`);
+    };
 
+	const isUserLoggedIn = (val) => {
+		if (val) {
+			return (<>
+				<NavDropdown.Item 
+				onClick={handleClick}
+				name="ver-editar">Ver/editar</NavDropdown.Item>
+				<NavDropdown.Item 
+				onClick={handleClick}
+				name="historia">Historia academica</NavDropdown.Item>
+				<NavDropdown.Item onClick={handleSignOut} >Salir</NavDropdown.Item>
+			</>)
+		}
+		return (<>
+			<NavDropdown.Item href="/inicioSesion">Iniciar sesion</NavDropdown.Item>
+			<NavDropdown.Item href="/registro">Registrarse</NavDropdown.Item>
+		</>)
+	}
+	
 	return (
 		<Navbar expand="lg" bg="dark" data-bs-theme="dark">
 			<Container>
@@ -23,7 +61,7 @@ function Header() {
 				<Navbar.Toggle aria-controls="basic-navbar-nav" />
 				<Navbar.Collapse id="basic-navbar-nav">
 					<Nav className="me-auto my-2 my-lg-0">
-						{filterUserType(type)}
+						{filterUserType(User.idTipoUsuario)}
 						<LinkContainer to="/institucion">
 							<Nav.Link>Institucion</Nav.Link>
 						</LinkContainer>
@@ -33,7 +71,7 @@ function Header() {
 					</Nav>
 					<Nav>
 						<NavDropdown title="Perfil">
-							{isUserLoggedIn(isLogged)}
+							{isUserLoggedIn(Authenticated)}
 						</NavDropdown>
 					</Nav>
 				</Navbar.Collapse>
@@ -44,7 +82,7 @@ function Header() {
 
 function filterUserType(type) {
 		switch (type) {
-			case 'ADMIN':
+			case 'Bedel':
 				return (
 					<NavDropdown title="Consultas/Modificaciones">
 						<NavDropdown.Item href="/">Carreras</NavDropdown.Item>
@@ -52,14 +90,14 @@ function filterUserType(type) {
 						<NavDropdown.Item href="/">Estudiantes</NavDropdown.Item>
 					</NavDropdown>
 				)
-			case 'ESTUDIANTE':
+			case 'Estudiante':
 				return (
 					<NavDropdown title="Inscripciones">
 						<NavDropdown.Item href="/">Carreras</NavDropdown.Item>
 						<NavDropdown.Item href="/">Materias</NavDropdown.Item>
 					</NavDropdown>
 				)
-			case 'DECANO':
+			case 'Decano':
 				return (
 					<LinkContainer to="/estadisticas">
 						<Nav.Link>Estadisticas</Nav.Link>
@@ -70,18 +108,6 @@ function filterUserType(type) {
 		}
 }
 
-function isUserLoggedIn(isLogged) {
-	if (isLogged) {
-		return (<>
-			<NavDropdown.Item href="/">Ver/editar</NavDropdown.Item>
-			<NavDropdown.Item href="/">Historia academica</NavDropdown.Item>
-		</>)
-	}
-	return (<>
-		<NavDropdown.Item href="/inicioSesion">Iniciar sesion</NavDropdown.Item>
-		<NavDropdown.Item href="/registro">Registrarse</NavDropdown.Item>
-	</>)
-}
 
 
 export default Header;

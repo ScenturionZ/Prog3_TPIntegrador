@@ -22,6 +22,8 @@ function App() {
 						<Route path='/registro' element={<Registro />} />
 						<Route path="/institucion" element={<Institucional />} />
 						<Route path="/contacto" element={<Contacto />} />
+						<Route path="/ver-editar" element={<Contacto/>} />
+						<Route path="/historia" element={<Institucional/>} />
 					</Routes>
 				</div>
 			</UserProvider>

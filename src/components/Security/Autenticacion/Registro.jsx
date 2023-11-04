@@ -1,13 +1,16 @@
 import { Button, Col, Container, Form, Row } from 'react-bootstrap';
+import { useContext, useState } from "react";
 
+import { UsersContext } from '../../context/UserContext';
 import { useNavigate } from 'react-router-dom';
-import { useState } from "react";
 
 function Registro() {
 
     const [IsLogged, setIsLogged] = useState(false)
     let navigate = useNavigate();
-
+    
+    const Usuarios = useContext( UsersContext);
+    
     const [Usuario, setUsuario] = useState({
         Usuario: '',
         Contraseña: '',

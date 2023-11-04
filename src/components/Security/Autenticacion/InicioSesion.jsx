@@ -1,72 +1,96 @@
-import { Button, Col, Container, Form, Row } from 'react-bootstrap';
+import { Button, Col, Container, Form, Row } from "react-bootstrap";
+import { useContext, useEffect, useState } from "react";
 
-import { UsersContext } from '../../context/UserContext';
-import Usuario from '../../model/Usuario';
-import { useNavigate } from 'react-router-dom';
-import { useState } from "react";
+import { UsersContext } from "../../context/UserContext";
+import axios from "axios";
+import { getTypeByValue } from "../../Model/TypeUser";
+import { useNavigate } from "react-router-dom";
 
 function InicioSesion() {
-
-    const [IsLogged, setIsLogged] = useState(false)
-    let navigate = useNavigate();
-
-    const usuario = new Usuario(
-        "",null,null,null,null,null,null
-    );
     
-    const [User, setUser] = useState({
-        usuario
-    });
+  //CONSTANTES
+  const navigate = useNavigate();
+  const { User, setUser, Authenticated, setAuthenticated } = useContext(UsersContext);
 
-    const handleOnChange = (e) => {
-        const { name, value } = e.target;
-        setUser({ ...User, [name]: value });
-    };
+  const initialStateLogin = {
+    clave: "",
+    correoElectronico: "",
+  };
+  const [Login, setLogin] = useState(initialStateLogin);
 
-    const handleOnSubmit = (e) => {
-        e.preventDefault();
-        //metodo que valide el usuario
-        //valido contra la base
-        setIsLogged(!IsLogged);
-        navigate("/");
-    }
+  const handleOnChange = (e) => {
+    const { name, value } = e.target;
+    setLogin({ ...Login, [name]: value });
+  };
 
-    return (
-        <Container>
-            <Row className="justify-content-center">
-                <Col lg={6} md={8} xs={12} >
-                    <Form onSubmit={handleOnSubmit}>
-                        <Form.Group className="mb-3" controlId="formEmail">
-                            <Form.Label>Usuario</Form.Label>
-                            <Form.Control
-                                required
-                                type="email"
-                                placeholder="Ingrese su email..."
-                                value={User.Usuario}
-                                name='Usuario'
-                                onChange={handleOnChange}
-                            />
-                        </Form.Group>
+  const handleLogin = () => {
+    setAuthenticated(true);
+    setLogin(initialStateLogin);
+  };
 
-                        <Form.Group className="mb-3" controlId="formBasicPassword">
-                            <Form.Label>Contraseña</Form.Label>
-                            <Form.Control
-                                required
-                                type="password"
-                                placeholder="Ingrese su contraseña..."
-                                value={User.Contraseña}
-                                name='Contraseña'
-                                onChange={handleOnChange}
-                            />
-                        </Form.Group>
-                        <Button variant="primary" type="submit">
-                            Iniciar sesion
-                        </Button>
-                    </Form>
-                </Col>
-            </Row>
-        </Container>
-    )
-};
+  
+const checkUser = async (e) => {
+    const URL = "http://localhost:5000/api/v1/login";
+    axios.post(URL, Login).then((resp) => {
+      const data = resp.data.dato;
+      if (data) {
+        console.log(User);
+        setUser({
+            id: data.id,
+            nombre: data.nombre,
+            apellido: data.apellido,
+            correoElectronico: data.correoElectronico,
+            idTipoUsuario: getTypeByValue(data.idTipoUsuario) 
+        });
+        handleLogin();
+      }
+    })
+  };
+
+  const handleOnSubmit = async (e) => {
+    e.preventDefault();
+    const check = await checkUser();
+    console.log(Login);
+    debugger;
+    navigate("/");
+  };
+
+  return (
+    <Container>
+      <Row className="justify-content-center">
+        <Col lg={6} md={8} xs={12}>
+          <Form onSubmit={(e) => handleOnSubmit(e)}>
+            <Form.Group className="mb-3" controlId="formEmail">
+              <Form.Label>Usuario</Form.Label>
+              <Form.Control
+                required
+                type="email"
+                placeholder="Ingrese su email..."
+                value={Login.correoElectronico}
+                name="correoElectronico"
+                onChange={handleOnChange}
+              />
+            </Form.Group>
+
+            <Form.Group className="mb-3" controlId="formBasicPassword">
+              <Form.Label>Contraseña</Form.Label>
+              <Form.Control
+                required
+                type="password"
+                placeholder="Ingrese su contraseña..."
+                value={Login.clave}
+                name="clave"
+                onChange={handleOnChange}
+              />
+            </Form.Group>
+            <Button variant="primary" type="submit">
+              Iniciar sesion
+            </Button>
+          </Form>
+        </Col>
+      </Row>
+    </Container>
+  );
+}
 
 export default InicioSesion;
