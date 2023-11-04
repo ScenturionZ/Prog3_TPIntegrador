@@ -1,34 +1,36 @@
 const crud = require("./crud");
+const TABLE_NAME = "estudiante";
 
 const findEstudianteById = async(id) => {
-    return crud.findById("estudiante", id, "idEstudiante");
+    return crud.findDataById(TABLE_NAME, id);
 }
 
 const findAllEstudiantes = async() => {
-    return crud.findAll("estudiante");
+    return crud.findAllData(TABLE_NAME);
 }
-
+/*
 const deleteEstudiante = async(id) => {
-    return crud.logicalDelete("estudiante", 0, id, "idEstudiante");
+    return crud.logicalDelete(TABLE_NAME, 0, id);
 }
 
 const activeEstudiante = async(id) => {
-    return crud.logicalDelete("estudiante", 1, id, "idEstudiante");
+    return crud.logicalDelete(TABLE_NAME, 1, id);
 }
+*/
 
 const createEstudiante = async(estudiante) => {
-    return crud.create("estudiante", estudiante, "idEstudiante");
+    return crud.create(TABLE_NAME, estudiante);
 }
 
 const updateEstudiante = async(estudiante, id) => {
-    return crud.update("estudiante", estudiante, id, "idEstudiante");
+    return crud.update(TABLE_NAME, estudiante, id);
 }
 
 module.exports = {
     findEstudianteById,
     findAllEstudiantes,
-    deleteEstudiante,
-    activeEstudiante,
+    /*deleteEstudiante,
+    activeEstudiante,*/
     createEstudiante,
     updateEstudiante
 };
