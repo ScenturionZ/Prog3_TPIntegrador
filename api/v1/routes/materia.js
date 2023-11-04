@@ -2,13 +2,14 @@ const { Router } = require("express");
 
 const router = Router();
 
-const { findMateriaById, findAllMaterias, deleteMateria, activeMateria, createMateria, updateMateria } = require("../../controllers/materia");
+const { findMateriaById, findAllMaterias, deleteMateria, activeMateria, createMateria, updateMateria, findCarrerasAsociadas } = require("../../controllers/materia");
 
-router.post("/Materias", createMateria);
-router.put("/Materias/:id", updateMateria);
-router.put("/Materias/activar/:id", activeMateria);
-router.delete("/Materias/:id", deleteMateria);
-router.get("/Materias", findAllMaterias);
-router.get("/Materias/:id", findMateriaById);
+router.post("/materias", createMateria);
+router.put("/materias/:id", updateMateria);
+router.put("/materias/activar/:id", activeMateria);
+router.delete("/materias/:id", deleteMateria);
+router.get("/materias", findAllMaterias);
+router.get("/materias/:id", findMateriaById);
+router.get("/materias/Carreras/:id", findCarrerasAsociadas);
 
 module.exports = router;

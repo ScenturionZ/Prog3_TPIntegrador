@@ -5,7 +5,7 @@ const findCarreraById = async(req, res) => {
     try {
         const id = req.params.id;
         if(!id){
-            res.status(404).json({Estado : msj.ESTADO_ERROR, msj : "FALTA ID DE LA CARRERA"});
+            res.status(404).json({Estado : msj.ESTADO_ERROR, msj : msj.FALTA_ID_CARRERA});
         }
 
         const carrera = await carreraDB.findCarreraById(id);
@@ -28,10 +28,10 @@ const deleteCarrera = async(req, res) => {
     try {
         const id = req.params.id;
         if(!id){
-            res.status(404).json({Estado : msj.ESTADO_ERROR, msj : "FALTA ID DE LA CARRERA"});
+            res.status(404).json({Estado : msj.ESTADO_ERROR, msj : msj.FALTA_ID_CARRERA});
         }
         await carreraDB.deleteCarrera(id);
-        res.status(200).json({Estado : msj.ESTADO_OK, msj : "Carrera eliminado"});
+        res.status(200).json({Estado : msj.ESTADO_OK, msj : "Carrera eliminada"});
     } catch (error) {
         throw error;        
     }
@@ -41,10 +41,10 @@ const activeCarrera = async(req, res) => {
     try {
         const id = req.params.id;
         if(!id){
-            res.status(404).json({Estado : msj.ESTADO_ERROR, msj : "FALTA ID DE LA CARRERA"});
+            res.status(404).json({Estado : msj.ESTADO_ERROR, msj : msj.FALTA_ID_CARRERA});
         }
         await carreraDB.activeCarrera(id);
-        res.status(200).json({Estado : msj.ESTADO_OK, msj : "Carrera activado"});
+        res.status(200).json({Estado : msj.ESTADO_OK, msj : "Carrera activada"});
     } catch (error) {
         throw error;        
     }
@@ -52,20 +52,20 @@ const activeCarrera = async(req, res) => {
 
 const createCarrera = async(req, res) => {
     try {
-        const {nombre, tipo, modalidad} = req.body;
+        const {nombre, tipoCarrera, modalidad} = req.body;
 
-        if(!nombre || !tipo || !modalidad){
+        if(!nombre || !tipoCarrera || !modalidad){
             res.status(404).json({Estado : msj.ESTADO_ERROR, msj : msj.FALTAN_DATOS});
         }
 
         const newCarrera = {
             nombre:nombre,
-            idTipoCarrera: tipo,	
+            idTipoCarrera: tipoCarrera,	
             idModalidad: modalidad
         };
 
         const result = await carreraDB.createCarrera(newCarrera);
-        res.status(201).json({Estado : msj.ESTADO_OK, msj : "Carrera creado", dato:result});
+        res.status(201).json({Estado : msj.ESTADO_OK, msj : "Carrera creada", dato:result});
     } catch (error) {
         throw error;        
     }
@@ -74,26 +74,41 @@ const createCarrera = async(req, res) => {
 const updateCarrera = async(req, res) => {
     try {
         
-        const {nombre, tipo, modalidad} = req.body;
+        const {nombre, tipoCarrera, modalidad} = req.body;
 
-        if(!nombre || !tipo || !modalidad){
+        if(!nombre || !tipoCarrera || !modalidad){
             res.status(404).json({Estado : msj.ESTADO_ERROR, msj : msj.FALTAN_DATOS});
         }
 
         const newCarrera = {
             nombre:nombre,
-            idTipoCarrera: tipo,	
+            idTipoCarrera: tipoCarrera,	
             idModalidad: modalidad
         };
         
         const id = req.params.id;
         if(!id){
-            res.status(404).json({status:msj.ESTADO_ERROR, msj : "FALTA ID DE LA CARRERA"});
+            res.status(404).json({status:msj.ESTADO_ERROR, msj : msj.FALTA_ID_CARRERA});
         }
         
         const result = await carreraDB.updateCarrera(newCarrera, id);
-        res.status(200).json({Estado : msj.ESTADO_OK, msj : "Carrera actualizado", dato : result});
+        res.status(200).json({Estado : msj.ESTADO_OK, msj : "Carrera actualizada", dato : result});
 
+    } catch (error) {
+        throw error;        
+    }
+};
+
+const findMateriasAsociadas = async(req, res) => {
+    try {
+
+        const id = req.params.id;
+        if(!id){
+            res.status(404).json({status:msj.ESTADO_ERROR, msj : msj.FALTA_ID_CARRERA});
+        }
+
+        const carreras = await carreraDB.findMateriasAsociadas(id);
+        res.status(200).json({Estado : msj.ESTADO_OK, dato:carreras});
     } catch (error) {
         throw error;        
     }
@@ -105,5 +120,6 @@ module.exports = {
     findAllCarreras,
     updateCarrera,
     deleteCarrera,
-    activeCarrera
+    activeCarrera,
+    findMateriasAsociadas
 };

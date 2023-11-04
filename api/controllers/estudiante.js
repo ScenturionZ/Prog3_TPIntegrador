@@ -1,11 +1,13 @@
 const estudianteDB = require("../db/estudiante")
+const usuarioDB = require("../db/usuario")
 const msj = require("../utils/mensajes");
+const encrypt = require("../utils/encrypt");
 
 const findEstudianteById = async(req, res) => {
     try {
         const id = req.params.id;
         if(!id){
-            res.status(404).json({Estado : msj.ESTADO_ERROR, msj : "FALTA ID DEL ESTUDIANTE"});
+            res.status(404).json({Estado : msj.ESTADO_ERROR, msj : msj.FALTA_ID_ESTUDIANTE});
         }
 
         const estudiante = await estudianteDB.findEstudianteById(id);
@@ -28,7 +30,7 @@ const deleteEstudiante = async(req, res) => {
     try {
         const id = req.params.id;
         if(!id){
-            res.status(404).json({Estado : msj.ESTADO_ERROR, msj : "FALTA ID DEL ESTUDIANTE"});
+            res.status(404).json({Estado : msj.ESTADO_ERROR, msj : msj.FALTA_ID_ESTUDIANTE});
         }
         await estudianteDB.deleteEstudiante(id);
         res.status(200).json({Estado : msj.ESTADO_OK, msj : "Estudiante eliminado"});
@@ -41,7 +43,7 @@ const activeEstudiante = async(req, res) => {
     try {
         const id = req.params.id;
         if(!id){
-            res.status(404).json({Estado : msj.ESTADO_ERROR, msj : "FALTA ID DEL ESTUDIANTE"});
+            res.status(404).json({Estado : msj.ESTADO_ERROR, msj : msj.FALTA_ID_ESTUDIANTE});
         }
         await estudianteDB.activeEstudiante(id);
         res.status(200).json({Estado : msj.ESTADO_OK, msj : "Estudiante activado"});
@@ -52,22 +54,32 @@ const activeEstudiante = async(req, res) => {
 
 const createEstudiante = async(req, res) => {
     try {
-        const {dni, nombre, apellido, fechaNacimiento, nacionalidad, correoElectronico, celular, foto} = req.body;
-
-        if(!dni || !nombre || !apellido || !nacionalidad || !correoElectronico){
+        const {documento, nombre, apellido, fechaNacimiento, nacionalidad, correoElectronico, clave , celular, foto, tipoDocumento} = req.body;
+        const tipoEstudiante = 3;
+        if(!documento || !nombre || !apellido || !nacionalidad || !correoElectronico || !clave || !tipoDocumento){
             res.status(404).json({Estado : msj.ESTADO_ERROR, msj : msj.FALTAN_DATOS});
+            return;
         }
 
-        const newEstudiante = {
-            dni: dni, 
-            nombre: nombre, 
-            apellido: apellido, 
-            fechaNacimiento: fechaNacimiento, 
-            nacionalidad: nacionalidad, 
-            correoElectronico: correoElectronico, 
-            celular: celular, 
-            foto: foto
+        const newUsuario = {
+            correoElectronico: correoElectronico,
+            clave: await encrypt.hashPass(clave),
+            nombre: nombre,
+            apellido: apellido,
+            idTipoUsuario: tipoEstudiante
         };
+
+        const user = await usuarioDB.createUsuario(newUsuario);
+        const newEstudiante = {
+            documento: documento, 
+            fechaNacimiento: fechaNacimiento, 
+            celular: celular, 
+            foto: foto,
+            idUsuario: user[0].id,
+            idNacionalidad: nacionalidad, 
+            idTipoDocumento: tipoDocumento
+        };
+        
         const result = await estudianteDB.createEstudiante(newEstudiante);
         res.status(201).json({Estado : msj.ESTADO_OK, msj : "Estudiante creado", dato:result});
     } catch (error) {
@@ -78,32 +90,68 @@ const createEstudiante = async(req, res) => {
 const updateEstudiante = async(req, res) => {
     try {
         
-        const {dni, nombre, apellido, fechaNacimiento, nacionalidad, correoElectronico, celular, foto} = req.body;
-
-        if(!dni || !nombre || !apellido || !nacionalidad || !correoElectronico){
+        const {documento, nombre, apellido, fechaNacimiento, nacionalidad, correoElectronico, clave , celular, foto, tipoDocumento} = req.body;
+        if(!documento || !nombre || !apellido || !nacionalidad || !correoElectronico || !clave || !tipoDocumento){
             res.status(404).json({Estado : msj.ESTADO_ERROR, msj : msj.FALTAN_DATOS});
+            return;
         }
 
         const newEstudiante = {
-            dni: dni, 
-            nombre: nombre, 
-            apellido: apellido, 
+            documento: documento, 
             fechaNacimiento: fechaNacimiento, 
-            nacionalidad: nacionalidad, 
-            correoElectronico: correoElectronico, 
             celular: celular, 
-            foto: foto
+            foto: foto,
+            idNacionalidad: nacionalidad, 
+            idTipoDocumento: tipoDocumento
         };
-
-        
+                
         const id = req.params.id;
         if(!id){
-            res.status(404).json({status:msj.ESTADO_ERROR, msj : "FALTA ID DEL ESTUDIANTE"});
+            res.status(404).json({status:msj.ESTADO_ERROR, msj : msj.FALTA_ID_ESTUDIANTE});
         }
         
-        const result = await estudianteDB.updateEstudiante(newEstudiante, id);
+        const e = await estudianteDB.updateEstudiante(newEstudiante, id);
+
+        const newUsuario = {
+            correoElectronico: correoElectronico,
+            clave: await encrypt.hashPass(clave),
+            nombre: nombre,
+            apellido: apellido
+        };
+        const user = await usuarioDB.updateUsuario(newUsuario, e[0].usuarioID);
+        const result = await estudianteDB.findEstudianteById(id);
         res.status(200).json({Estado : msj.ESTADO_OK, msj : "Estudiante actualizado", dato : result});
 
+    } catch (error) {
+        throw error;        
+    }
+};
+
+const findCarrerasAsociadas = async(req, res) => {
+    try {
+
+        const id = req.params.id;
+        if(!id){
+            res.status(404).json({status:msj.ESTADO_ERROR, msj : msj.FALTA_ID_MATERIA});
+        }
+
+        const carreras = await estudianteDB.findCarrerasAsociadas(id);
+        res.status(200).json({Estado : msj.ESTADO_OK, dato:carreras});
+    } catch (error) {
+        throw error;        
+    }
+};
+
+const findMateriasAsociadas = async(req, res) => {
+    try {
+
+        const id = req.params.id;
+        if(!id){
+            res.status(404).json({status:msj.ESTADO_ERROR, msj : msj.FALTA_ID_ESTUDIANTE});
+        }
+
+        const materias = await estudianteDB.findMateriasAsociadas(id);
+        res.status(200).json({Estado : msj.ESTADO_OK, dato:materias});
     } catch (error) {
         throw error;        
     }
@@ -115,5 +163,7 @@ module.exports = {
     findAllEstudiantes,
     updateEstudiante,
     deleteEstudiante,
-    activeEstudiante
+    activeEstudiante,
+    findCarrerasAsociadas,
+    findMateriasAsociadas
 };

@@ -1,15 +1,15 @@
-const carreraDB = require("../db/materia")
+const materiaDB = require("../db/materia")
 const msj = require("../utils/mensajes");
 
 const findMateriaById = async(req, res) => {
     try {
         const id = req.params.id;
         if(!id){
-            res.status(404).json({Estado : msj.ESTADO_ERROR, msj : "FALTA ID DE LA MATERIA"});
+            res.status(404).json({Estado : msj.ESTADO_ERROR, msj : msj.FALTA_ID_MATERIA});
         }
 
-        const carrera = await carreraDB.findMateriaById(id);
-        res.status(200).json({Estado : msj.ESTADO_OK, dato:carrera});
+        const materia = await materiaDB.findMateriaById(id);
+        res.status(200).json({Estado : msj.ESTADO_OK, dato:materia});
     } catch (error) {
         throw error;        
     }
@@ -17,8 +17,8 @@ const findMateriaById = async(req, res) => {
 
 const findAllMaterias = async(req, res) => {
     try {
-        const carreras = await carreraDB.findAllMaterias();
-        res.status(200).json({Estado : msj.ESTADO_OK, dato:carreras});
+        const materias = await materiaDB.findAllMaterias();
+        res.status(200).json({Estado : msj.ESTADO_OK, dato:materias});
     } catch (error) {
         throw error;        
     }
@@ -28,10 +28,10 @@ const deleteMateria = async(req, res) => {
     try {
         const id = req.params.id;
         if(!id){
-            res.status(404).json({Estado : msj.ESTADO_ERROR, msj : "FALTA ID DE LA MATERIA"});
+            res.status(404).json({Estado : msj.ESTADO_ERROR, msj : msj.FALTA_ID_MATERIA});
         }
-        await carreraDB.deleteMateria(id);
-        res.status(200).json({Estado : msj.ESTADO_OK, msj : "Materia eliminado"});
+        await materiaDB.deleteMateria(id);
+        res.status(200).json({Estado : msj.ESTADO_OK, msj : "Materia eliminada"});
     } catch (error) {
         throw error;        
     }
@@ -41,10 +41,10 @@ const activeMateria = async(req, res) => {
     try {
         const id = req.params.id;
         if(!id){
-            res.status(404).json({Estado : msj.ESTADO_ERROR, msj : "FALTA ID DE LA MATERIA"});
+            res.status(404).json({Estado : msj.ESTADO_ERROR, msj : msj.FALTA_ID_MATERIA});
         }
-        await carreraDB.activeMateria(id);
-        res.status(200).json({Estado : msj.ESTADO_OK, msj : "Materia activado"});
+        await materiaDB.activeMateria(id);
+        res.status(200).json({Estado : msj.ESTADO_OK, msj : "Materia activada"});
     } catch (error) {
         throw error;        
     }
@@ -52,20 +52,20 @@ const activeMateria = async(req, res) => {
 
 const createMateria = async(req, res) => {
     try {
-        const {nombre, tipo, modalidad} = req.body;
+        const {nombre, tipoMateria, horasSemanales} = req.body;
 
-        if(!nombre || !tipo || !modalidad){
+        if(!nombre || !tipoMateria || !horasSemanales){
             res.status(404).json({Estado : msj.ESTADO_ERROR, msj : msj.FALTAN_DATOS});
         }
 
         const newMateria = {
             nombre:nombre,
-            idTipoMateria: tipo,	
-            idModalidad: modalidad
+            idTipoMateria: tipoMateria,	
+            horasSemanales: horasSemanales
         };
 
-        const result = await carreraDB.createMateria(newMateria);
-        res.status(201).json({Estado : msj.ESTADO_OK, msj : "Materia creado", dato:result});
+        const result = await materiaDB.createMateria(newMateria);
+        res.status(201).json({Estado : msj.ESTADO_OK, msj : "Materia creada", dato:result});
     } catch (error) {
         throw error;        
     }
@@ -73,27 +73,41 @@ const createMateria = async(req, res) => {
 
 const updateMateria = async(req, res) => {
     try {
-        
-        const {nombre, tipo, modalidad} = req.body;
+        const {nombre, tipoMateria, horasSemanales} = req.body;
 
-        if(!nombre || !tipo || !modalidad){
+        if(!nombre || !tipoMateria || !horasSemanales){
             res.status(404).json({Estado : msj.ESTADO_ERROR, msj : msj.FALTAN_DATOS});
         }
 
         const newMateria = {
             nombre:nombre,
-            idTipoMateria: tipo,	
-            idModalidad: modalidad
+            idTipoMateria: tipoMateria,	
+            horasSemanales: horasSemanales
         };
         
         const id = req.params.id;
         if(!id){
-            res.status(404).json({status:msj.ESTADO_ERROR, msj : "FALTA ID DE LA MATERIA"});
+            res.status(404).json({status:msj.ESTADO_ERROR, msj : msj.FALTA_ID_MATERIA});
         }
         
-        const result = await carreraDB.updateMateria(newMateria, id);
-        res.status(200).json({Estado : msj.ESTADO_OK, msj : "Materia actualizado", dato : result});
+        const result = await materiaDB.updateMateria(newMateria, id);
+        res.status(200).json({Estado : msj.ESTADO_OK, msj : "Materia actualizada", dato : result});
 
+    } catch (error) {
+        throw error;        
+    }
+};
+
+const findCarrerasAsociadas = async(req, res) => {
+    try {
+
+        const id = req.params.id;
+        if(!id){
+            res.status(404).json({status:msj.ESTADO_ERROR, msj : msj.FALTA_ID_MATERIA});
+        }
+
+        const materias = await materiaDB.findCarrerasAsociadas(id);
+        res.status(200).json({Estado : msj.ESTADO_OK, dato:materias});
     } catch (error) {
         throw error;        
     }
@@ -105,5 +119,6 @@ module.exports = {
     findAllMaterias,
     updateMateria,
     deleteMateria,
-    activeMateria
+    activeMateria,
+    findCarrerasAsociadas
 };
