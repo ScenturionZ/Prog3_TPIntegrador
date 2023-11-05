@@ -38,6 +38,18 @@ const findMateriasAsociadas = async(id) => {
     return undefined;
 }
 
+const findEstudiantesIncriptos = async() => {
+    const subQuery = "SELECT COUNT(*) FROM estudiantecarrera ec WHERE ec.idCarrera = c.id AND ec.fechaBaja IS NULL";
+    const query = "SELECT ( " + subQuery + " ) AS alumnos, c.nombre " +
+                    "FROM carrera c WHERE c.activo = 1";
+    const result = await crud.runSql(query);
+    if(result.length){
+        return result;
+    }
+    return undefined;
+
+}
+
 module.exports = {
     findCarreraById,
     findAllCarreras,
@@ -45,5 +57,6 @@ module.exports = {
     activeCarrera,
     createCarrera,
     updateCarrera,
-    findMateriasAsociadas
+    findMateriasAsociadas,
+    findEstudiantesIncriptos
 };

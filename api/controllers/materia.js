@@ -113,6 +113,14 @@ const findCarrerasAsociadas = async(req, res) => {
     }
 };
 
+const findEstudiantesIncriptos = async(req, res) => {
+    try {
+        const materias = await materiaDB.findEstudiantesIncriptos();
+        res.status(200).json({Estado : msj.ESTADO_OK, dato:materias});
+    } catch (error) {
+        throw error;        
+    }
+};
 module.exports = {
     createMateria,
     findMateriaById,
@@ -120,5 +128,6 @@ module.exports = {
     updateMateria,
     deleteMateria,
     activeMateria,
-    findCarrerasAsociadas
+    findCarrerasAsociadas,
+    findEstudiantesIncriptos
 };

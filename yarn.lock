@@ -1152,6 +1152,16 @@
   resolved "https://registry.npmjs.org/@bcoe/v8-coverage/-/v8-coverage-0.2.3.tgz"
   integrity sha512-0hYQ8SB4Db5zvZB4axdMHGwEaQjkZzFjQiN9LVYvIFB2nSUHW9tYpxWriPrWDASIxiaXax83REcLxuSdnGPZtw==
 
+"@canvasjs/charts@^3.7.5":
+  version "3.7.26"
+  resolved "https://registry.npmjs.org/@canvasjs/charts/-/charts-3.7.26.tgz"
+  integrity sha512-4BcaB0ko64NH+A4OHlKjONBEMaPDRt2V7XYTJ+lFcn0MlzzkzhWhNXGYdPL3wN9uIEkBw/1yaNZuU55cadPVpw==
+
+"@canvasjs/react-charts@^1.0.0":
+  version "1.0.0"
+  resolved "https://registry.npmjs.org/@canvasjs/react-charts/-/react-charts-1.0.0.tgz"
+  integrity sha512-wGI675kz65owAwXZWzJULK9GXKCrPV59+CCawXP801f4rmYGmPskdtGrczgJhA8ThFEgIvq3K4qrkpLDPSmxCQ==
+
 "@csstools/normalize.css@*":
   version "12.0.0"
   resolved "https://registry.npmjs.org/@csstools/normalize.css/-/normalize.css-12.0.0.tgz"
@@ -9018,7 +9028,7 @@ react-transition-group@^4.4.5:
     loose-envify "^1.4.0"
     prop-types "^15.6.2"
 
-"react@^16.8.0 || ^17.0.0-rc.1 || ^18.0.0", react@^18.0.0, react@^18.2.0, "react@>= 16", react@>=0.14.0, react@>=15.0.0, react@>=16.13.1, react@>=16.14.0, react@>=16.6.0, react@>=16.8, react@>=16.8.0, react@>=16.8.6, react@18.2.0:
+"react@^16.8.0 || ^17.0.0-rc.1 || ^18.0.0", react@^18.0.0, react@^18.2.0, "react@>= 16", react@>=0.14.0, react@>=15.0.0, react@>=16.0.0, react@>=16.13.1, react@>=16.14.0, react@>=16.6.0, react@>=16.8, react@>=16.8.0, react@>=16.8.6, react@18.2.0:
   version "18.2.0"
   resolved "https://registry.npmjs.org/react/-/react-18.2.0.tgz"
   integrity sha512-/3IjMdb2L9QbBdWiW5e3P2/npwMBaU9mHCSCUzNln0ZCYbcfTsGbTJrU/kGemdH2IWmB2ioZ+zkxtmq6g09fGQ==

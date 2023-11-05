@@ -114,6 +114,15 @@ const findMateriasAsociadas = async(req, res) => {
     }
 };
 
+const findEstudiantesIncriptos = async(req, res) => {
+    try {
+        const carreras = await carreraDB.findEstudiantesIncriptos();
+        res.status(200).json({Estado : msj.ESTADO_OK, dato:carreras});
+    } catch (error) {
+        throw error;        
+    }
+};
+
 module.exports = {
     createCarrera,
     findCarreraById,
@@ -121,5 +130,6 @@ module.exports = {
     updateCarrera,
     deleteCarrera,
     activeCarrera,
-    findMateriasAsociadas
+    findMateriasAsociadas,
+    findEstudiantesIncriptos
 };
