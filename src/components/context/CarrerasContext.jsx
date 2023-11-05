@@ -19,7 +19,7 @@ export default function CarrerasProvider(props) {
   
   useEffect(() => {
     getCarreras();
-}, []);
+  }, []);
 
   return (
     <CarrerasContext.Provider value={{carreras, setCarreras}}> {props.children} </CarrerasContext.Provider>

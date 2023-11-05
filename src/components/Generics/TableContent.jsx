@@ -1,15 +1,15 @@
-import { Table } from "react-bootstrap";
-import TableBody from "./TableBody";
-
-function TableContent({ data }) {
-
+function TableContent({ data, claves, tipo}) {
   return (<>
-    { data.map((item) => {
-        if (item.activo === 1) {
-          <TableBody items={item} key={item.id}/>
-        }
-      })
-    }
+    <tbody>
+      {data.map ( (value) => (
+        <tr>
+          {claves.map ( (key) => (
+              <td>{value[key]}</td>
+          ))}
+          <td>BTN - {value.id}</td>
+        </tr>
+      ))}
+    </tbody> 
 </>)
 };
 

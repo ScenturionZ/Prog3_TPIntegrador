@@ -42,7 +42,6 @@ const findEstudiantesIncriptos = async() => {
     const subQuery = "SELECT COUNT(*) FROM estudiantemateria em WHERE em.idMateria = m.id AND em.fechaBaja IS NULL";
     const query = "SELECT ( " + subQuery + " ) AS alumnos, m.nombre " +
                     "FROM materia m WHERE m.activo = 1";
-    console.log(query);
     const result = await crud.runSql(query);
     if(result.length){
         return result;
