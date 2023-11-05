@@ -1,7 +1,7 @@
 import { Button, Col, Container, Form, Row } from "react-bootstrap";
 import { useContext, useState } from "react";
 
-import { UsersContext } from "../../context/UserContext";
+import { UsersContext } from "../../Context/UserContext";
 import axios from "axios";
 import { getTypeByValue } from "../../Enum/TypeUser";
 import { useNavigate } from "react-router-dom";

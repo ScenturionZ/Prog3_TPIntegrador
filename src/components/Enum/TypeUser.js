@@ -1,7 +1,7 @@
 const TypeUser = Object.freeze ({
   'Bedel':  1,
   'Decano': 2,
-  'Estudiante': 3
+  'Estudiante': 3,
   });
 
   function getTypeByValue( value) {

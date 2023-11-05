@@ -4,7 +4,7 @@ import { Container, Image, Nav, NavDropdown, Navbar } from 'react-bootstrap';
 import { useContext, useState } from 'react';
 
 import { LinkContainer } from 'react-router-bootstrap'
-import { UsersContext } from "../context/UserContext";
+import { UsersContext } from "../Context/UserContext";
 import { useNavigate } from "react-router-dom";
 
 function Header() {
@@ -86,15 +86,15 @@ function filterUserType(type) {
 				return (
 					<NavDropdown title="Consultas/Modificaciones">
 						<NavDropdown.Item href="/carreras">Carreras</NavDropdown.Item>
-						<NavDropdown.Item href="/">Materias</NavDropdown.Item>
-						<NavDropdown.Item href="/">Estudiantes</NavDropdown.Item>
+						<NavDropdown.Item href="/materias">Materias</NavDropdown.Item>
+						<NavDropdown.Item href="/estudiantes">Estudiantes</NavDropdown.Item>
 					</NavDropdown>
 				)
 			case 'Estudiante':
 				return (
 					<NavDropdown title="Inscripciones">
-						<NavDropdown.Item href="/">Carreras</NavDropdown.Item>
-						<NavDropdown.Item href="/">Materias</NavDropdown.Item>
+						<NavDropdown.Item href="/carreras">Carreras</NavDropdown.Item>
+						<NavDropdown.Item href="/materias">Materias</NavDropdown.Item>
 					</NavDropdown>
 				)
 			case 'Decano':

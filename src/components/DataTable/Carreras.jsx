@@ -1,7 +1,7 @@
 import { Col, Container, Row, Table } from "react-bootstrap";
 import { useContext, useEffect, useState } from "react";
 
-import { CarrerasContext } from "../context/CarrerasContext";
+import { CarrerasContext } from "../Context/CarrerasContext";
 import TableContent from "../Generics/TableContent";
 
 function Carreras() {
