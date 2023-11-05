@@ -2,6 +2,8 @@ import './App.css';
 
 import { Route, BrowserRouter as Router, Routes } from "react-router-dom";
 
+import Carreras from '../Views/Carreras';
+import CarrerasProvider from '../context/CarrerasContext';
 import Contacto from '../Contacto/Contacto';
 import Header from '../Header/Header';
 import Home from '../Home/Home';
@@ -14,6 +16,7 @@ function App() {
 	return (
 		<Router>
 			<UserProvider>
+				<CarrerasProvider>
 				<Header />
 				<div className="container mt-5 justify-content-md-center">
 					<Routes>
@@ -24,8 +27,13 @@ function App() {
 						<Route path="/contacto" element={<Contacto />} />
 						<Route path="/ver-editar" element={<Contacto/>} />
 						<Route path="/historia" element={<Institucional/>} />
+						<Route path="/materias" element={<Contacto />} />
+						<Route path="/carreras" element={<Carreras/>} />
+						<Route path="/estudiantes" element={<Institucional/>} />
+						<Route path="/estadisticas" element={<Institucional/>} />
 					</Routes>
 				</div>
+				</CarrerasProvider>
 			</UserProvider>
 		</Router>
 

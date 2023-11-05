@@ -85,7 +85,7 @@ function filterUserType(type) {
 			case 'Bedel':
 				return (
 					<NavDropdown title="Consultas/Modificaciones">
-						<NavDropdown.Item href="/">Carreras</NavDropdown.Item>
+						<NavDropdown.Item href="/carreras">Carreras</NavDropdown.Item>
 						<NavDropdown.Item href="/">Materias</NavDropdown.Item>
 						<NavDropdown.Item href="/">Estudiantes</NavDropdown.Item>
 					</NavDropdown>

@@ -1,5 +1,5 @@
 import { Button, Col, Container, Form, Row } from "react-bootstrap";
-import { useContext, useEffect, useState } from "react";
+import { useContext, useState } from "react";
 
 import { UsersContext } from "../../context/UserContext";
 import axios from "axios";
@@ -34,7 +34,6 @@ const checkUser = async (e) => {
     axios.post(URL, Login).then((resp) => {
       const data = resp.data.dato;
       if (data) {
-        console.log(User);
         setUser({
             id: data.id,
             nombre: data.nombre,
@@ -51,7 +50,6 @@ const checkUser = async (e) => {
     e.preventDefault();
     const check = await checkUser();
     console.log(Login);
-    debugger;
     navigate("/");
   };
 
