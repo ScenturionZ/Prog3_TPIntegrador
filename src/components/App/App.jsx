@@ -8,9 +8,9 @@ import Contacto from '../Contacto/Contacto';
 import Estadisticas from '../Estadisticas/Estadisticas';
 import Header from '../Header/Header';
 import Home from '../Home/Home';
-import InicioSesion from '../Security/Autenticacion/InicioSesion';
+import InicioSesion from '../Autenticacion/InicioSesion';
 import Institucional from '../Institucional/Institucional';
-import Registro from '../Security/Autenticacion/Registro';
+import Registro from '../Autenticacion/Registro';
 import UserProvider from '../Context/UserContext';
 
 function App() {

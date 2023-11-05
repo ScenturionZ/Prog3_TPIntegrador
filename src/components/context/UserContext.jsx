@@ -28,7 +28,7 @@ export default function UserProvider (props) {
         axios.get(URL)
             .then(
                 resp => {
-                    docs.push({ ...resp.data, id: resp.data.id });
+                    docs.push(resp.data.dato);
                     setUsuarios(docs);
                 }
             )
