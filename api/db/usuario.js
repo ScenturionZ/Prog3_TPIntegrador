@@ -35,7 +35,7 @@ const checkUsuario = async(username, password) => {
             return user[0];
         }
     }
-
+    console.log(query);
     return undefined;
 }
 
