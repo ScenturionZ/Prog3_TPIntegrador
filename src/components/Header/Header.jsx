@@ -34,7 +34,7 @@ function Header() {
 			return (<>
 				<NavDropdown.Item 
 				onClick={handleClick}
-				name="ver-editar">Ver/editar</NavDropdown.Item>
+				name="perfil">Perfil</NavDropdown.Item>
 				<NavDropdown.Item 
 				onClick={handleClick}
 				name="historia">Historia academica</NavDropdown.Item>
