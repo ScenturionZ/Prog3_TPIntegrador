@@ -11,7 +11,8 @@ const findNacionalidadById = async(req, res) => {
         const nac = await nacionalidadDB.findNacionalidadById(id);
         res.status(200).json({Estado : msj.ESTADO_OK, data:nac});
     } catch (error) {
-        throw error;        
+        console.log(error);
+        res.status(500).json({Estado : msj.ESTADO_ERROR, dato: error});       
     }
 };
 
@@ -20,7 +21,8 @@ const findAllNacionalidades = async(req, res) => {
         const nacs = await nacionalidadDB.findAllNacionalidades();
         res.status(200).json({Estado : msj.ESTADO_OK, data:nacs});
     } catch (error) {
-        throw error;        
+        console.log(error);
+        res.status(500).json({Estado : msj.ESTADO_ERROR, dato: error});       
     }
 };
 

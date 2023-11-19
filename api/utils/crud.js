@@ -63,6 +63,11 @@ async function logicalDelete(table, value, id){
     await conn.query(query)
 }
 
+async function logicalDateDelete(table, value, id){
+    const query = "UPDATE " + table + " SET fechaBaja = " + value + " WHERE id = " + id;
+    await conn.query(query)
+}
+
 async function update(table, data, id){
     const query = "UPDATE " + table + " SET ? WHERE id = " + id;
     const [newObj] = await conn.query(query, data);
@@ -86,7 +91,7 @@ async function runSql(q){
 async function checkData(data){
     let result = data;
     let cols = Object.keys(result);
-    if(Array.isArray(result)){
+    if(Array.isArray(result) && result.length){
         cols = Object.keys(result[0]);
     }
     let tables = getTableCols(cols);    
@@ -119,7 +124,6 @@ async function checkData(data){
                     if(t === "Nacionalidad"){
                         e[t.toLowerCase()] = element.pais
                     }else{
-
                         e[t.toLowerCase().charAt(0) + t.substring(1)] = element.descripcion
                     }
                 }else{
@@ -168,6 +172,7 @@ module.exports = {
     findById,
     update,
     logicalDelete,
+    logicalDateDelete,
     findAllData,
     findDataById,
     createData,

@@ -11,8 +11,10 @@ const v1Nacionalidad = require("./v1/routes/nacionalidad");
 const v1Carrera = require("./v1/routes/carrera");
 const v1Materia = require("./v1/routes/materia");
 const v1Usuario = require("./v1/routes/usuario");
+const v1InscripcionMateria = require("./v1/routes/inscripcionMateria");
+const v1InscripcionCarrera = require("./v1/routes/inscripcionCarrera");
+const v1Estadisticas = require("./v1/routes/estadisticas");
 const v1Auth = require('./v1/routes/auth');
-
 //Middleware
 const {esBedel, esDecano} = require('./config/middleware');
 const port = process.env.REACT_APP_API_PORT || 5000;
@@ -27,13 +29,18 @@ app.use(bodyParser.urlencoded({
 app.use(passport.initialize());
 //app.use(passport.session());
 
+const checkUsuarioBedel = [passport.authenticate('jwt', {session:false}), esBedel];
+
 app.use("/api/v1/publico", v1Public);
-app.use("/api/v1", v1Auth);
-app.use("/api/v1", v1Estudiante);
 app.use("/api/v1", v1Nacionalidad);
-app.use("/api/v1", v1Carrera);
-app.use("/api/v1", v1Materia);
-app.use("/api/v1", v1Usuario);
+app.use("/api/v1", v1Auth);
+app.use("/api/v1/estadisticas", [passport.authenticate('jwt', {session:false}), esDecano], v1Estadisticas);
+app.use("/api/v1", checkUsuarioBedel, v1Estudiante);
+app.use("/api/v1", checkUsuarioBedel, v1Carrera);
+app.use("/api/v1", checkUsuarioBedel, v1Materia);
+app.use("/api/v1", checkUsuarioBedel, v1Usuario);
+app.use("/api/v1", checkUsuarioBedel, v1InscripcionMateria);
+app.use("/api/v1", checkUsuarioBedel, v1InscripcionCarrera);
 
 //API PORT
 app.listen(port,  function (err) {

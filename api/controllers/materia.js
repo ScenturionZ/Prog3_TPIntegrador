@@ -11,7 +11,8 @@ const findMateriaById = async(req, res) => {
         const materia = await materiaDB.findMateriaById(id);
         res.status(200).json({Estado : msj.ESTADO_OK, dato:materia});
     } catch (error) {
-        throw error;        
+        console.log(error);
+        res.status(500).json({Estado : msj.ESTADO_ERROR, dato: error});       
     }
 };
 
@@ -20,7 +21,8 @@ const findAllMaterias = async(req, res) => {
         const materias = await materiaDB.findAllMaterias();
         res.status(200).json({Estado : msj.ESTADO_OK, dato:materias});
     } catch (error) {
-        throw error;        
+        console.log(error);
+        res.status(500).json({Estado : msj.ESTADO_ERROR, dato: error});       
     }
 };
 
@@ -33,7 +35,8 @@ const deleteMateria = async(req, res) => {
         await materiaDB.deleteMateria(id);
         res.status(200).json({Estado : msj.ESTADO_OK, msj : "Materia eliminada"});
     } catch (error) {
-        throw error;        
+        console.log(error);
+        res.status(500).json({Estado : msj.ESTADO_ERROR, dato: error});       
     }
 };
 
@@ -46,7 +49,8 @@ const activeMateria = async(req, res) => {
         await materiaDB.activeMateria(id);
         res.status(200).json({Estado : msj.ESTADO_OK, msj : "Materia activada"});
     } catch (error) {
-        throw error;        
+        console.log(error);
+        res.status(500).json({Estado : msj.ESTADO_ERROR, dato: error});       
     }
 };
 
@@ -67,7 +71,8 @@ const createMateria = async(req, res) => {
         const result = await materiaDB.createMateria(newMateria);
         res.status(201).json({Estado : msj.ESTADO_OK, msj : "Materia creada", dato:result});
     } catch (error) {
-        throw error;        
+        console.log(error);
+        res.status(500).json({Estado : msj.ESTADO_ERROR, dato: error});       
     }
 };
 
@@ -94,7 +99,8 @@ const updateMateria = async(req, res) => {
         res.status(200).json({Estado : msj.ESTADO_OK, msj : "Materia actualizada", dato : result});
 
     } catch (error) {
-        throw error;        
+        console.log(error);
+        res.status(500).json({Estado : msj.ESTADO_ERROR, dato: error});       
     }
 };
 
@@ -109,16 +115,18 @@ const findCarrerasAsociadas = async(req, res) => {
         const materias = await materiaDB.findCarrerasAsociadas(id);
         res.status(200).json({Estado : msj.ESTADO_OK, dato:materias});
     } catch (error) {
-        throw error;        
+        console.log(error);
+        res.status(500).json({Estado : msj.ESTADO_ERROR, dato: error});       
     }
 };
 
-const findEstudiantesIncriptos = async(req, res) => {
+const findEstudiantesInscriptosMaterias = async(req, res) => {
     try {
-        const materias = await materiaDB.findEstudiantesIncriptos();
+        const materias = await materiaDB.findEstudiantesinscriptos();
         res.status(200).json({Estado : msj.ESTADO_OK, dato:materias});
     } catch (error) {
-        throw error;        
+        console.log(error);
+        res.status(500).json({Estado : msj.ESTADO_ERROR, dato: error});       
     }
 };
 module.exports = {
@@ -129,5 +137,5 @@ module.exports = {
     deleteMateria,
     activeMateria,
     findCarrerasAsociadas,
-    findEstudiantesIncriptos
+    findEstudiantesInscriptosMaterias
 };

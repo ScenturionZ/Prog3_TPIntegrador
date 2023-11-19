@@ -11,7 +11,8 @@ const findCarreraById = async(req, res) => {
         const carrera = await carreraDB.findCarreraById(id);
         res.status(200).json({Estado : msj.ESTADO_OK, dato:carrera});
     } catch (error) {
-        throw error;        
+        console.log(error);
+        res.status(500).json({Estado : msj.ESTADO_ERROR, dato: error});       
     }
 };
 
@@ -20,7 +21,8 @@ const findAllCarreras = async(req, res) => {
         const carreras = await carreraDB.findAllCarreras();
         res.status(200).json({Estado : msj.ESTADO_OK, dato:carreras});
     } catch (error) {
-        throw error;        
+        console.log(error);
+        res.status(500).json({Estado : msj.ESTADO_ERROR, dato: error});       
     }
 };
 
@@ -33,7 +35,8 @@ const deleteCarrera = async(req, res) => {
         await carreraDB.deleteCarrera(id);
         res.status(200).json({Estado : msj.ESTADO_OK, msj : "Carrera eliminada"});
     } catch (error) {
-        throw error;        
+        console.log(error);
+        res.status(500).json({Estado : msj.ESTADO_ERROR, dato: error});       
     }
 };
 
@@ -46,7 +49,8 @@ const activeCarrera = async(req, res) => {
         await carreraDB.activeCarrera(id);
         res.status(200).json({Estado : msj.ESTADO_OK, msj : "Carrera activada"});
     } catch (error) {
-        throw error;        
+        console.log(error);
+        res.status(500).json({Estado : msj.ESTADO_ERROR, dato: error});       
     }
 };
 
@@ -67,7 +71,8 @@ const createCarrera = async(req, res) => {
         const result = await carreraDB.createCarrera(newCarrera);
         res.status(201).json({Estado : msj.ESTADO_OK, msj : "Carrera creada", dato:result});
     } catch (error) {
-        throw error;        
+        console.log(error);
+        res.status(500).json({Estado : msj.ESTADO_ERROR, dato: error});       
     }
 };
 
@@ -95,7 +100,8 @@ const updateCarrera = async(req, res) => {
         res.status(200).json({Estado : msj.ESTADO_OK, msj : "Carrera actualizada", dato : result});
 
     } catch (error) {
-        throw error;        
+        console.log(error);
+        res.status(500).json({Estado : msj.ESTADO_ERROR, dato: error});       
     }
 };
 
@@ -110,16 +116,18 @@ const findMateriasAsociadas = async(req, res) => {
         const carreras = await carreraDB.findMateriasAsociadas(id);
         res.status(200).json({Estado : msj.ESTADO_OK, dato:carreras});
     } catch (error) {
-        throw error;        
+        console.log(error);
+        res.status(500).json({Estado : msj.ESTADO_ERROR, dato: error});       
     }
 };
 
-const findEstudiantesIncriptos = async(req, res) => {
+const findEstudiantesInscriptosCarreras = async(req, res) => {
     try {
-        const carreras = await carreraDB.findEstudiantesIncriptos();
+        const carreras = await carreraDB.findEstudiantesinscriptos();
         res.status(200).json({Estado : msj.ESTADO_OK, dato:carreras});
     } catch (error) {
-        throw error;        
+        console.log(error);
+        res.status(500).json({Estado : msj.ESTADO_ERROR, dato: error});       
     }
 };
 
@@ -131,5 +139,5 @@ module.exports = {
     deleteCarrera,
     activeCarrera,
     findMateriasAsociadas,
-    findEstudiantesIncriptos
+    findEstudiantesInscriptosCarreras
 };

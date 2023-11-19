@@ -1,9 +1,11 @@
 const passport = require("passport");
 const passportJWT = require("passport-jwt");
+const passport_local = require("passport-local");
 const usuarioDB = require("../db/usuario");
+require('dotenv').config();
 
-const LocalStrategy = require("passport-local").Strategy;
 const ExtractJWT = passportJWT.ExtractJwt;
+const LocalStrategy = passport_local.Strategy;
 const JWTStrategy = passportJWT.Strategy;
 
 passport.use(
@@ -34,12 +36,11 @@ passport.use(
       secretOrKey: process.env.JWT_TOKEN,
     },
     async (jwtPayload, result) => {
-      console.log(jwtPayload);
       const usuario = await usuarioDB.findUsuarioById(jwtPayload.id);
       if (usuario) {
         return result(null, usuario);
       } else {
-        return result(null, false, { message: "Token invalido" });
+        return result(null, false, { message: "Token invalido o Usuario inactivo" });
       }
     }
   )

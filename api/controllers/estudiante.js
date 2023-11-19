@@ -13,7 +13,8 @@ const findEstudianteById = async(req, res) => {
         const estudiante = await estudianteDB.findEstudianteById(id);
         res.status(200).json({Estado : msj.ESTADO_OK, dato:estudiante});
     } catch (error) {
-        throw error;        
+        console.log(error);
+        res.status(500).json({Estado : msj.ESTADO_ERROR, dato: error});       
     }
 };
 
@@ -22,7 +23,8 @@ const findAllEstudiantes = async(req, res) => {
         const estudiantes = await estudianteDB.findAllEstudiantes();
         res.status(200).json({Estado : msj.ESTADO_OK, dato:estudiantes});
     } catch (error) {
-        throw error;        
+        console.log(error);
+        res.status(500).json({Estado : msj.ESTADO_ERROR, dato: error});       
     }
 };
 
@@ -35,7 +37,8 @@ const deleteEstudiante = async(req, res) => {
         await estudianteDB.deleteEstudiante(id);
         res.status(200).json({Estado : msj.ESTADO_OK, msj : "Estudiante eliminado"});
     } catch (error) {
-        throw error;        
+        console.log(error);
+        res.status(500).json({Estado : msj.ESTADO_ERROR, dato: error});       
     }
 };
 
@@ -48,7 +51,8 @@ const activeEstudiante = async(req, res) => {
         await estudianteDB.activeEstudiante(id);
         res.status(200).json({Estado : msj.ESTADO_OK, msj : "Estudiante activado"});
     } catch (error) {
-        throw error;        
+        console.log(error);
+        res.status(500).json({Estado : msj.ESTADO_ERROR, dato: error});       
     }
 };
 
@@ -83,7 +87,8 @@ const createEstudiante = async(req, res) => {
         const result = await estudianteDB.createEstudiante(newEstudiante);
         res.status(201).json({Estado : msj.ESTADO_OK, msj : "Estudiante creado", dato:result});
     } catch (error) {
-        throw error;        
+        console.log(error);
+        res.status(500).json({Estado : msj.ESTADO_ERROR, dato: error});       
     }
 };
 
@@ -123,7 +128,8 @@ const updateEstudiante = async(req, res) => {
         res.status(200).json({Estado : msj.ESTADO_OK, msj : "Estudiante actualizado", dato : result});
 
     } catch (error) {
-        throw error;        
+        console.log(error);
+        res.status(500).json({Estado : msj.ESTADO_ERROR, dato: error});       
     }
 };
 
@@ -138,7 +144,8 @@ const findCarrerasAsociadas = async(req, res) => {
         const carreras = await estudianteDB.findCarrerasAsociadas(id);
         res.status(200).json({Estado : msj.ESTADO_OK, dato:carreras});
     } catch (error) {
-        throw error;        
+        console.log(error);
+        res.status(500).json({Estado : msj.ESTADO_ERROR, dato: error});       
     }
 };
 
@@ -153,7 +160,8 @@ const findMateriasAsociadas = async(req, res) => {
         const materias = await estudianteDB.findMateriasAsociadas(id);
         res.status(200).json({Estado : msj.ESTADO_OK, dato:materias});
     } catch (error) {
-        throw error;        
+        console.log(error);
+        res.status(500).json({Estado : msj.ESTADO_ERROR, dato: error});       
     }
 };
 

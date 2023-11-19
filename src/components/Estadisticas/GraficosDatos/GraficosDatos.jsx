@@ -35,7 +35,7 @@ function GraficosDatos({datos}) {
 				dataPoints: []
 			}
 		];
-		const url = "http://localhost:5000/api/v1/" + datos + "/incriptos";
+		const url = "http://localhost:5000/api/v1/estadisticas/" + datos;
 		axios.get(url).then(res => {
 			for(const data of res.data.dato){
 				newData[0].dataPoints.push({

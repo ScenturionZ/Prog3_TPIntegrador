@@ -1,4 +1,4 @@
-const crud = require("./crud");
+const crud = require("../utils/crud");
 const TABLE_NAME = "estudiante";
 
 const findEstudianteById = async(id) => {
@@ -28,6 +28,7 @@ const updateEstudiante = async(estudiante, id) => {
     return crud.updateData(TABLE_NAME, estudiante, id);
 }
 
+/*
 const findCarrerasAsociadas = async(id) => {
     const query = "SELECT c.* FROM estudiantecarrera ec " +
     "INNER JOIN estudiante e ON e.id = ec.id " +
@@ -52,7 +53,7 @@ const findMateriasAsociadas = async(id) => {
     }
 
     return undefined;
-}
+}*/
 
 module.exports = {
     findEstudianteById,
@@ -60,7 +61,7 @@ module.exports = {
     deleteEstudiante,
     activeEstudiante,
     createEstudiante,
-    updateEstudiante,
+    updateEstudiante/*,
     findCarrerasAsociadas,
-    findMateriasAsociadas
+    findMateriasAsociadas*/
 };

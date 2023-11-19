@@ -16,7 +16,8 @@ const findUsuarioById = async (req, res) => {
     const usuario = await usuarioDB.findUsuarioById(id);
     res.status(200).json({ Estado: msj.ESTADO_OK, dato: usuario });
   } catch (error) {
-    throw error;
+    console.log(error);
+    res.status(500).json({Estado : msj.ESTADO_ERROR, dato: error});
   }
 };
 
@@ -25,7 +26,8 @@ const findAllUsuarios = async (req, res) => {
     const usuarios = await usuarioDB.findAllUsuarios();
     res.status(200).json({ Estado: msj.ESTADO_OK, dato: usuarios });
   } catch (error) {
-    throw error;
+    console.log(error);
+    res.status(500).json({Estado : msj.ESTADO_ERROR, dato: error});
   }
 };
 
@@ -40,7 +42,8 @@ const deleteUsuario = async (req, res) => {
     await usuarioDB.deleteUsuario(id);
     res.status(200).json({ Estado: msj.ESTADO_OK, msj: "Usuario eliminado" });
   } catch (error) {
-    throw error;
+    console.log(error);
+    res.status(500).json({Estado : msj.ESTADO_ERROR, dato: error});
   }
 };
 
@@ -55,7 +58,8 @@ const activeUsuario = async (req, res) => {
     await usuarioDB.activeUsuario(id);
     res.status(200).json({ Estado: msj.ESTADO_OK, msj: "Usuario activado" });
   } catch (error) {
-    throw error;
+    console.log(error);
+    res.status(500).json({Estado : msj.ESTADO_ERROR, dato: error});
   }
 };
 
@@ -81,7 +85,8 @@ const createUsuario = async (req, res) => {
       .status(201)
       .json({ Estado: msj.ESTADO_OK, msj: "Usuario creado", dato: result });
   } catch (error) {
-    throw error;
+    console.log(error);
+    res.status(500).json({Estado : msj.ESTADO_ERROR, dato: error});
   }
 };
 
@@ -108,7 +113,8 @@ const createUsuarioPublic = async (req, res) => {
       .status(201)
       .json({ Estado: msj.ESTADO_OK, msj: "Usuario creado", dato: result });
   } catch (error) {
-    throw error;
+    console.log(error);
+    res.status(500).json({Estado : msj.ESTADO_ERROR, dato: error});
   }
 };
 
@@ -142,22 +148,20 @@ const updateUsuario = async (req, res) => {
       dato: result,
     });
   } catch (error) {
-    throw error;
+    console.log(error);
+    res.status(500).json({Estado : msj.ESTADO_ERROR, dato: error});
   }
 };
 
 const checkUsuario = async (req, res) => {
-  const usuario = req.body.usuario;
-  console.log(usuario);
+  console.log(req.body);
   passport.authenticate("local", { session: false }, (error, usuario, info) => {
-    /*if (!usuario.correoElectronico || !usuario.clave) {
-      return res
-        .status(404)
-        .json({ Estado: msj.ESTADO_ERROR, msj: msj.FALTAN_DATOS });
-    }*/
-    console.log(usuario);
-    console.log(info);
-
+    if (error || !usuario) {
+        return res.status(400).json({
+            message: "Datos incorrectos",
+            usuario
+        });
+    }
     req.login(usuario, { session: false }, (error) => {
       if (error) {
         res.send(error);

@@ -1,4 +1,4 @@
-const crud = require("./crud");
+const crud = require("../utils/crud");
 const TABLE_NAME = "materia";
 
 const findMateriaById = async(id) => {
@@ -38,7 +38,7 @@ const findCarrerasAsociadas = async(id) => {
     return undefined;
 }
 
-const findEstudiantesIncriptos = async() => {
+const findEstudiantesinscriptos = async() => {
     const subQuery = "SELECT COUNT(*) FROM estudiantemateria em WHERE em.idMateria = m.id AND em.fechaBaja IS NULL";
     const query = "SELECT ( " + subQuery + " ) AS alumnos, m.nombre " +
                     "FROM materia m WHERE m.activo = 1";
@@ -57,5 +57,5 @@ module.exports = {
     createMateria,
     updateMateria,
     findCarrerasAsociadas,
-    findEstudiantesIncriptos
+    findEstudiantesinscriptos
 };

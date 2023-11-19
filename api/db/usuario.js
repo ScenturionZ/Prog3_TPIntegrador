@@ -1,4 +1,4 @@
-const crud = require("./crud");
+const crud = require("../utils/crud");
 const encrypt = require("../utils/encrypt");
 const TABLE_NAME = "usuario";
 
@@ -35,7 +35,6 @@ const checkUsuario = async(username, password) => {
             return user[0];
         }
     }
-    console.log(query);
     return undefined;
 }
 
