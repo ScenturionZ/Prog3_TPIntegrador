@@ -33,7 +33,7 @@ app.use("/api/v1", v1Estudiante);
 app.use("/api/v1", v1Nacionalidad);
 app.use("/api/v1", v1Carrera);
 app.use("/api/v1", v1Materia);
-app.use("/api/v1", [passport.authenticate('jwt', {session:false}), esBedel], v1Usuario);
+app.use("/api/v1", v1Usuario);
 
 //API PORT
 app.listen(port,  function (err) {

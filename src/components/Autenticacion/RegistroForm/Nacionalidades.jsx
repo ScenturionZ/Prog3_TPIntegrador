@@ -1,7 +1,6 @@
-import { Button, Col, Container, Form, Row } from "react-bootstrap";
-import { useEffect, useParams, useState } from "react";
-
+import { Form } from "react-bootstrap";
 import axios from "axios";
+import { useState } from "react";
 
 function Nacionalidades() {
   const [Nacionalidad, setNacionalidad] = useState({});
@@ -16,7 +15,7 @@ function Nacionalidades() {
 
   
   const handleOnChange = (e) => {
-    const { name, value } = e.target;
+    const { value } = e.target;
     console.log(value);
     getNacionalidad(value);
   };

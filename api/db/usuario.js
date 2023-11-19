@@ -39,6 +39,12 @@ const checkUsuario = async(username, password) => {
     return undefined;
 }
 
+const validateCorreo = async(correo) => {
+    const query = "SELECT * FROM usuario WHERE correoElectronico = '" + correo + "'" ;
+    const data = await crud.runSql(query);
+    return data;
+}
+
 module.exports = {
     findUsuarioById,
     findAllUsuarios,
@@ -46,5 +52,6 @@ module.exports = {
     activeUsuario,
     createUsuario,
     updateUsuario,
-    checkUsuario
+    checkUsuario,
+    validateCorreo
 };

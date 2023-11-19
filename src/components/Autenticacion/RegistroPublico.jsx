@@ -1,27 +1,18 @@
 import { Button, Col, Container, Form, Row } from "react-bootstrap";
 
-import Nacionalidades from "./RegistroForm/Nacionalidades";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 
-//import { useNavigate } from "react-router-dom";
-
-
-function Registro() {
-  //let navigate = useNavigate();
+function RegistroPublico() {
+  let navigate = useNavigate();
   const [validEmail, setValidEmail] = useState(false);
 
   const [Usuario, setUsuario] = useState({
-    documento: "",
     nombre: "",
     apellido: "",
-    fechaNacimiento: "",
-    nacionalidad: "",
     correoElectronico: "",
-    clave: "",
-    celular: "",
-    foto: "",
-    tipoDocumento: "",
+    clave: ""
   });
 
   // if (!Usuarios.length) {
@@ -32,23 +23,27 @@ function Registro() {
   
   const validateEmail = async (e) => {
     const URL = "http://localhost:5000/api/v1/validateEmail";
-    axios.post(URL, Usuario.correoElectronico).then((resp) => {  
+    axios.post(URL, {
+      correoElectronico: Usuario.correoElectronico
+    }).then((resp) => {  
+      console.log("Estoy en validateEmail");
+      console.log(resp.status);
       if( resp.status.valueOf(200)){
-        console.log("Usuario con correo electronico valido")
         setValidEmail(true);
-      }else{
-        console.log("El correo electronico ingresado ya existe")
+        console.log(validEmail);
       }
     });
-    
   };
 
   const register = async (e) => {
-    validateEmail();
+    console.log("Estoy en register");
+    console.log(validEmail);
     if(validEmail){
-      const URL = "http://localhost:5000/api/v1/estudiantes";
+      const URL = "http://localhost:5000/api/v1/publico/nuevo-usuario";
       axios.post(URL, Usuario).then((resp) => {  
-        console.log("usuario creado")
+        console.log(resp);
+        console.log(resp.status);
+        return resp.status;
       });
   };
 };
@@ -60,8 +55,11 @@ function Registro() {
 
   const handleOnSubmit = (e) => {
     e.preventDefault();
-    register();
-    //navigate.push("/");
+    validateEmail();
+    const status = register();
+    if(status.valueOf(201)){
+      navigate("/inicio-sesion");
+    }
   };
 
   return (
@@ -90,30 +88,6 @@ function Registro() {
                 value={Usuario.apellido}
                 name="apellido"
                 placeholder="Ingrese su apellido..."
-                onChange={handleOnChange}
-              />
-            </Form.Group>
-            <Nacionalidades/>
-            <Form.Group md="4" className="mb-3">
-              <Form.Label>Fecha de nacimiento</Form.Label>
-              <Form.Control
-                required
-                type="date"
-                value={Usuario.fechaNacimiento}
-                name="fechaNacimiento"
-                placeholder="Ingrese su fecha de nacimiento..."
-                onChange={handleOnChange}
-              />
-            </Form.Group>
-            
-            <Form.Group md="4" className="mb-3">
-              <Form.Label>Numero de contacto</Form.Label>
-              <Form.Control
-                required
-                type="text"
-                value={Usuario.celular}
-                name="celular"
-                placeholder="Ingrese su numero de contacto..."
                 onChange={handleOnChange}
               />
             </Form.Group>
@@ -156,4 +130,4 @@ function Registro() {
   );
 };
 
-export default Registro;
+export default RegistroPublico;

@@ -85,6 +85,33 @@ const createUsuario = async (req, res) => {
   }
 };
 
+const createUsuarioPublic = async (req, res) => {
+  try {
+    const { correoElectronico, clave, nombre, apellido } = req.body;
+
+    const tipoUsuario = 4;
+
+    if (!correoElectronico || !clave || !nombre || !apellido || !tipoUsuario) {
+      res.status(404).json({ Estado: msj.ESTADO_ERROR, msj: msj.FALTAN_DATOS });
+    }
+
+    const newUsuario = {
+      correoElectronico: correoElectronico,
+      clave: await encrypt.hashPass(clave),
+      nombre: nombre,
+      apellido: apellido,
+      idTipoUsuario: tipoUsuario,
+    };
+
+    const result = await usuarioDB.createUsuario(newUsuario);
+    res
+      .status(201)
+      .json({ Estado: msj.ESTADO_OK, msj: "Usuario creado", dato: result });
+  } catch (error) {
+    throw error;
+  }
+};
+
 const updateUsuario = async (req, res) => {
   try {
     const { correo, pass, nombre, apellido, tipoUsuario } = req.body;
@@ -130,7 +157,7 @@ const checkUsuario = async (req, res) => {
     }*/
     console.log(usuario);
     console.log(info);
-    
+
     req.login(usuario, { session: false }, (error) => {
       if (error) {
         res.send(error);
@@ -141,6 +168,21 @@ const checkUsuario = async (req, res) => {
   })(req, res);
 };
 
+const validateUsuarioEmail = async (req, res) => {
+    const correoElectronico = req.body.correoElectronico;
+
+    const result = await usuarioDB.validateCorreo(correoElectronico);
+    if (result.length) {
+      return res.status(401).json({ Estado: msj.ESTADO_ERROR, msj: msj.USUARIO_EXISTENTE });
+    }
+    return res.status(200).json({
+      Estado: msj.ESTADO_OK,
+      msj: "Correo valido",
+      dato: result,
+    });
+    
+};
+
 module.exports = {
   createUsuario,
   findUsuarioById,
@@ -149,4 +191,6 @@ module.exports = {
   deleteUsuario,
   activeUsuario,
   checkUsuario,
+  validateUsuarioEmail,
+  createUsuarioPublic,
 };
