@@ -41,8 +41,6 @@ function RegistroPublico() {
     if(validEmail){
       const URL = "http://localhost:5000/api/v1/publico/nuevo-usuario";
       axios.post(URL, Usuario).then((resp) => {  
-        console.log(resp);
-        console.log(resp.status);
         return resp.status;
       });
   };
@@ -58,7 +56,7 @@ function RegistroPublico() {
     validateEmail();
     const status = register();
     if(status.valueOf(201)){
-      navigate("/inicio-sesion");
+      navigate("/inicio-sesion", { replace: true, state: {title: "Un paso más, inicia sesion para acceder:" }});
     }
   };
 

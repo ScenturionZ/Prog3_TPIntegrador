@@ -1,14 +1,14 @@
 import './Header.css';
 
 import { Container, Image, Nav, NavDropdown, Navbar } from 'react-bootstrap';
-import { useContext, useState } from 'react';
 
 import { LinkContainer } from 'react-router-bootstrap'
 import { UsersContext } from "../Context/UserContext";
+import { useContext } from 'react';
 import { useNavigate } from "react-router-dom";
 
 function Header() {
-	const { User, setUser, Authenticated, setAuthenticated } = useContext(UsersContext);
+	const { User, setUser, Authenticated, setAuthenticated} = useContext(UsersContext);
 	const navigate = useNavigate();
 	
 	const handleSignOut = () => {
@@ -42,7 +42,7 @@ function Header() {
 			</>)
 		}
 		return (<>
-			<NavDropdown.Item href="/inicioSesion">Iniciar sesion</NavDropdown.Item>
+			<NavDropdown.Item href="/inicio-sesion">Iniciar sesion</NavDropdown.Item>
 			<NavDropdown.Item href="/registro">Registrarse</NavDropdown.Item>
 		</>)
 	}

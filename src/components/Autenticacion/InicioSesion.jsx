@@ -1,16 +1,19 @@
 import { Button, Col, Container, Form, Row } from "react-bootstrap";
 import { useContext, useState } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
 
 import { UsersContext } from "../Context/UserContext";
 import axios from "axios";
 import { getTypeByValue } from "../Enum/typeUser";
-import { useNavigate } from "react-router-dom";
 
-function InicioSesion() {
-    
+function InicioSesion(props) {
+  
+  const location = useLocation();
+  const title = location?.state?.title;
+  
   //CONSTANTES
   const navigate = useNavigate();
-  const { User, setUser, Authenticated, setAuthenticated } = useContext(UsersContext);
+  const { User, setUser, setAuthenticated } = useContext(UsersContext);
 
   const initialStateLogin = {
     clave: "",
@@ -24,7 +27,6 @@ function InicioSesion() {
   };
 
   const handleLogin = () => {
-    setAuthenticated(true);
     setLogin(initialStateLogin);
   };
 
@@ -49,7 +51,7 @@ const checkUser = async (e) => {
   const handleOnSubmit = async (e) => {
     e.preventDefault();
     const check = await checkUser();
-    console.log(Login);
+    setAuthenticated(true);
     navigate("/");
   };
 
@@ -57,6 +59,7 @@ const checkUser = async (e) => {
     <Container>
       <Row className="justify-content-center">
         <Col lg={6} md={8} xs={12}>
+        <h3>{title != null ? title : "Bienvenido/a de vuelta"}</h3>
           <Form onSubmit={(e) => handleOnSubmit(e)}>
             <Form.Group className="mb-3" controlId="formEmail">
               <Form.Label>Usuario</Form.Label>
