@@ -77,6 +77,7 @@ function Registro() {
     <Container>
       <Row className="justify-content-center">
         <Col lg={6} md={8} xs={12}>
+          <h3>Agregar estudiante:</h3>
           <Form onSubmit={(e) => handleOnSubmit(e)}>
             <h5> Datos personales: </h5>
             <Form.Group md="4" className="mb-3">
@@ -102,7 +103,9 @@ function Registro() {
                 onChange={handleOnChange}
               />
             </Form.Group>
-            <Nacionalidades />
+            
+            {/* <Nacionalidades /> */}
+            
             <Form.Group md="4" className="mb-3">
               <Form.Label>Fecha de nacimiento</Form.Label>
               <Form.Control
@@ -141,7 +144,7 @@ function Registro() {
                 {
                 TIPOS_DE_DNI.map(tipo => {
                   return <>
-                   <option value={tipo} key={() => getKeyFromValue(tipo)}> {tipo}</option>
+                   <option value={tipo} key={getKeyFromValue(tipo)}> {tipo}</option>
                   </>
                 })}
               </Form.Control>
@@ -188,7 +191,7 @@ function Registro() {
             </Form.Group>
 
             <Button variant="primary" type="submit">
-              Registrarse
+              Agregar estudiante
             </Button>
           </Form>
         </Col>

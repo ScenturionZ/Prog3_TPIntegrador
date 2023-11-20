@@ -3,6 +3,7 @@ const msj = require("../utils/mensajes");
 
 const findNacionalidadById = async(req, res) => {
     try {
+        console.log(req);
         const id = req.params.id;
         if(!id){
             res.status(404).json({Estado : msj.ESTADO_ERROR, msj : msj.FALTA_ID_NACIONALIDAD});

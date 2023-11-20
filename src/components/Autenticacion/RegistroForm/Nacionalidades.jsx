@@ -6,8 +6,7 @@ function Nacionalidades() {
   const [Nacionalidad, setNacionalidad] = useState({});
 
   const getNacionalidad = async (id) => {
-    const URL = `http://localhost:5000/api/v1/nacionalidades/:${id}`;
-    console.log(URL)
+    const URL = `http://localhost:5000/api/v1/nacionalidades/${id}`;
     axios.post(URL).then((resp) => {
       setNacionalidad(resp.data.data);
     });

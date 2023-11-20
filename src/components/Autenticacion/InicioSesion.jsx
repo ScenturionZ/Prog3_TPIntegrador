@@ -41,7 +41,6 @@ const checkUser = async (e) => {
             idTipoUsuario: getTypeByValue(data.idTipoUsuario) 
         });
       }
-      console.log(User);
     })
   };
 

@@ -15,10 +15,11 @@ const typeDocument = Object.freeze ({
   };
   
   function getKeyFromValue(value){
-    let select = Object.keys(typeDocument).filter( e => typeDocument[e] == value);
-    console.log(select);
+    let select = Object.keys(typeDocument).filter( e => typeDocument[e] === value);
+    return select;
   };
   
     module.exports = {
-      getAll
+      getAll,
+      getKeyFromValue
     };
