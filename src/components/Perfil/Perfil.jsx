@@ -1,68 +1,26 @@
 import { Button, Col, Container, Form, Row } from "react-bootstrap";
+import { useContext, useState } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
 
-import axios from "axios";
-import { useNavigate } from "react-router-dom";
-import { useState } from "react";
+function Perfil() {
+    
+    //CONSTANTES
+    const navigate = useNavigate();
+    const { User } = useContext(UsersContext);
+        
+    const handleOnSubmit = async (e) => {
+        e.preventDefault();
+;       //guardo datos
+        //salto pop up estudiante creado y vuelvo atras
+      };
 
-function RegistroPublico() {
-  let navigate = useNavigate();
-  const [validEmail, setValidEmail] = useState(false);
-
-  const [Usuario, setUsuario] = useState({
-    nombre: "",
-    apellido: "",
-    correoElectronico: "",
-    clave: ""
-  });
-
-  // if (!Usuarios.length) {
-  //   return () => {
-  //     <div> Cargando ...</div>;
-  //   };
-  // }
-  
-  const validateEmail = async (e) => {
-    const URL = "http://localhost:5000/api/v1/validateEmail";
-    axios.post(URL, {
-      correoElectronico: Usuario.correoElectronico
-    }).then((resp) => {  
-      if( resp.status.valueOf(200)){
-        setValidEmail(true);
-        console.log(validEmail);
-      }
-    });
-  };
-
-  const register = async (e) => {
-    console.log("Estoy en register");
-    console.log(validEmail);
-    if(validEmail){
-      const URL = "http://localhost:5000/api/v1/publico/nuevo-usuario";
-      axios.post(URL, Usuario).then((resp) => {  
-        return resp.status;
-      });
-  };
-};
-
-  const handleOnChange = (e) => {
-    const { name, value } = e.target;
-    setUsuario({ ...Usuario, [name]: value });
-  };
-
-  const handleOnSubmit = (e) => {
-    e.preventDefault();
-    validateEmail();
-    const status = register();
-    if(status.valueOf(201)){
-      navigate("/inicio-sesion", { replace: true, state: {title: "Un paso más, inicia sesion para acceder:" }});
-    }
-  };
-
-  return (
-    <Container>
-      <Row className="justify-content-center">
-        <Col lg={6} md={8} xs={12}>
-          <Form onSubmit={handleOnSubmit}>
+      
+    return (
+        <Container>
+        <Row className="justify-content-center">
+          <Col lg={6} md={8} xs={12}>
+          <Form onSubmit={(e) => handleOnSubmit(e)}>
+            
           <h5> Datos personales: </h5>
             <Form.Group md="4" className="mb-3">
               <Form.Label>Nombre</Form.Label>
@@ -84,6 +42,42 @@ function RegistroPublico() {
                 value={Usuario.apellido}
                 name="apellido"
                 placeholder="Ingrese su apellido..."
+                onChange={handleOnChange}
+              />
+            </Form.Group>
+            <Nacionalidades/>
+            <Form.Group md="4" className="mb-3">
+              <Form.Label>Fecha de nacimiento</Form.Label>
+              <Form.Control
+                required
+                type="date"
+                value={Usuario.fechaNacimiento}
+                name="fechaNacimiento"
+                placeholder="Ingrese su fecha de nacimiento..."
+                onChange={handleOnChange}
+              />
+            </Form.Group>
+            
+            <Form.Group md="4" className="mb-3">
+              <Form.Label>Numero de contacto</Form.Label>
+              <Form.Control
+                required
+                type="text"
+                value={Usuario.celular}
+                name="celular"
+                placeholder="Ingrese su numero de contacto..."
+                onChange={handleOnChange}
+              />
+            </Form.Group>
+
+            <Form.Group md="4" className="mb-3">
+              <Form.Label>Numero de documento</Form.Label>
+              <Form.Control
+                required
+                type="text"
+                value={Usuario}
+                name="celular"
+                placeholder="Ingrese su numero de documento..."
                 onChange={handleOnChange}
               />
             </Form.Group>
@@ -115,15 +109,15 @@ function RegistroPublico() {
                 placeholder="Debe contener una mayuscula y un numero"
               />
             </Form.Group>
-
+            
             <Button variant="primary" type="submit">
-              Registrarse
+              Guardar datos
             </Button>
           </Form>
         </Col>
-      </Row>
-    </Container>
-  );
-};
+        </Row>
+        </Container>
+            );
+}
 
-export default RegistroPublico;
+export default Institucional;

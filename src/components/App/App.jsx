@@ -9,10 +9,10 @@ import Header from '../Header/Header';
 import Home from '../Home/Home';
 import InicioSesion from '../Autenticacion/InicioSesion';
 import Institucional from '../Institucional/Institucional';
+import { ProtectedRoute } from '../ProtectedRoute/ProtectedRoute';
+import Registro from '../Autenticacion/Registro';
 import RegistroPublico from '../Autenticacion/RegistroPublico';
 import UserProvider from '../Context/UserContext';
-
-//import Registro from '../Autenticacion/Registro';
 
 function App() {
 	return (
@@ -24,6 +24,11 @@ function App() {
 						<Route path='/' element={<Home />} />
 						<Route path='/inicio-sesion' element={<InicioSesion />} />
 						<Route path='/registro' element={<RegistroPublico />} />
+						<Route path='/registro-estudiante' element={
+						<ProtectedRoute typeOfUser='Bedel'>
+							<Registro />
+						</ProtectedRoute>
+						} />
 						<Route path="/institucional" element={<Institucional />} />
 						<Route path="/contacto" element={<Contacto />} />
 						<Route path="/perfil" element={<Home/>} />
@@ -31,7 +36,11 @@ function App() {
 						<Route path="/materias" element={<Home />} />
 						<Route path="/carreras" element={<Carreras/>} />
 						<Route path="/estudiantes" element={<Home/>} />
-						<Route path="/estadisticas" element={<Estadisticas/>} />
+						<Route path="/estadisticas" element={
+						<ProtectedRoute typeOfUser='Decano'>
+							<Estadisticas/>
+						</ProtectedRoute>		
+						} />
 					</Routes>
 				</div>
 			</UserProvider>

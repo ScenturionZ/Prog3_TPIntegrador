@@ -6,7 +6,7 @@ import { UsersContext } from "../Context/UserContext";
 import axios from "axios";
 import { getTypeByValue } from "../Enum/typeUser";
 
-function InicioSesion(props) {
+function InicioSesion() {
   
   const location = useLocation();
   const title = location?.state?.title;
@@ -26,9 +26,6 @@ function InicioSesion(props) {
     setLogin({ ...Login, [name]: value });
   };
 
-  const handleLogin = () => {
-    setLogin(initialStateLogin);
-  };
 
   
 const checkUser = async (e) => {
@@ -43,15 +40,16 @@ const checkUser = async (e) => {
             correoElectronico: data.correoElectronico,
             idTipoUsuario: getTypeByValue(data.idTipoUsuario) 
         });
-        handleLogin();
       }
+      console.log(User);
     })
   };
 
   const handleOnSubmit = async (e) => {
     e.preventDefault();
-    const check = await checkUser();
+    checkUser();
     setAuthenticated(true);
+    setLogin(initialStateLogin);
     navigate("/");
   };
 

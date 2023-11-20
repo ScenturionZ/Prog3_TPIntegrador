@@ -1,7 +1,5 @@
 import React, { createContext, useEffect, useState } from 'react';
 
-import axios from 'axios';
-
 //Contexto
 export const UsersContext = createContext();
 
@@ -9,7 +7,6 @@ export const UsersContext = createContext();
 export default function UserProvider (props) {
     
     const [Authenticated, setAuthenticated] = useState(false)
-    const [Usuarios, setUsuarios] = useState([]);
     const [User, setUser] = useState(
         {
             id: " ",
@@ -21,26 +18,8 @@ export default function UserProvider (props) {
     );
     
 
-    const URL = "http://localhost:5000/api/v1/usuarios";
-
-    const getUsuarios = async (e) => {
-        const docs = [];
-        axios.get(URL)
-            .then(
-                resp => {
-                    docs.push(resp.data.dato);
-                    setUsuarios(docs);
-                }
-            )
-    }
-    
-
-    useEffect(() => {
-        getUsuarios();
-    }, []);
-
     return (
-        <UsersContext.Provider value={{ Usuarios, setUsuarios , User,setUser, Authenticated, setAuthenticated }} >
+        <UsersContext.Provider value={{ User,setUser, Authenticated, setAuthenticated }} >
             {props.children}
         </UsersContext.Provider>
     )

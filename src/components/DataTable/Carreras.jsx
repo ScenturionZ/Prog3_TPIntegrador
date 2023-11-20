@@ -5,7 +5,7 @@ import { CarrerasContext } from "../Context/CarrerasContext";
 import TableContent from "../Generics/TableContent";
 
 function Carreras() {
-  const { carreras, setCarreras } = useContext(CarrerasContext);
+  const { carreras } = useContext(CarrerasContext);
   const [ tableHeader, setTableHeader] = useState({
     keys: []
   });

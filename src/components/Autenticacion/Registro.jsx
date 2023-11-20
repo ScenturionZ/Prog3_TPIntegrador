@@ -1,4 +1,5 @@
 import { Button, Col, Container, Form, Row } from "react-bootstrap";
+import { getAll, getKeyFromValue } from "../Enum/typeDocument";
 
 import Nacionalidades from "./RegistroForm/Nacionalidades";
 import axios from "axios";
@@ -6,10 +7,13 @@ import { useState } from "react";
 
 //import { useNavigate } from "react-router-dom";
 
-
 function Registro() {
+
+  const TIPOS_DE_DNI = getAll();
+
   //let navigate = useNavigate();
   const [validEmail, setValidEmail] = useState(false);
+  
 
   const [Usuario, setUsuario] = useState({
     documento: "",
@@ -29,29 +33,30 @@ function Registro() {
   //     <div> Cargando ...</div>;
   //   };
   // }
-  
+
   const validateEmail = async (e) => {
     const URL = "http://localhost:5000/api/v1/validateEmail";
-    axios.post(URL, Usuario.correoElectronico).then((resp) => {  
-      if( resp.status.valueOf(200)){
-        console.log("Usuario con correo electronico valido")
-        setValidEmail(true);
-      }else{
-        console.log("El correo electronico ingresado ya existe")
-      }
-    });
-    
+    axios
+      .post(URL, {
+        correoElectronico: Usuario.correoElectronico,
+      })
+      .then((resp) => {
+        if (resp.status.valueOf(200)) {
+          setValidEmail(true);
+          console.log(validEmail);
+        }
+      });
   };
 
   const register = async (e) => {
-    validateEmail();
-    if(validEmail){
+    if (validEmail) {
       const URL = "http://localhost:5000/api/v1/estudiantes";
-      axios.post(URL, Usuario).then((resp) => {  
-        console.log("usuario creado")
+      axios.post(URL, Usuario).then((resp) => {
+        console.log("usuario creado");
+        return resp.status;
       });
+    }
   };
-};
 
   const handleOnChange = (e) => {
     const { name, value } = e.target;
@@ -60,16 +65,20 @@ function Registro() {
 
   const handleOnSubmit = (e) => {
     e.preventDefault();
-    register();
-    //navigate.push("/");
+    validateEmail();
+    const status = register();
+    if (status.valueOf(201)) {
+      console.log("estudiante creado con exito");
+      //navigate("/", { replace: true});
+    }
   };
 
   return (
     <Container>
       <Row className="justify-content-center">
         <Col lg={6} md={8} xs={12}>
-          <Form onSubmit={handleOnSubmit}>
-          <h5> Datos personales: </h5>
+          <Form onSubmit={(e) => handleOnSubmit(e)}>
+            <h5> Datos personales: </h5>
             <Form.Group md="4" className="mb-3">
               <Form.Label>Nombre</Form.Label>
               <Form.Control
@@ -81,7 +90,7 @@ function Registro() {
                 onChange={handleOnChange}
               />
             </Form.Group>
-            
+
             <Form.Group md="4" className="mb-3">
               <Form.Label>Apellido</Form.Label>
               <Form.Control
@@ -93,7 +102,7 @@ function Registro() {
                 onChange={handleOnChange}
               />
             </Form.Group>
-            <Nacionalidades/>
+            <Nacionalidades />
             <Form.Group md="4" className="mb-3">
               <Form.Label>Fecha de nacimiento</Form.Label>
               <Form.Control
@@ -105,7 +114,7 @@ function Registro() {
                 onChange={handleOnChange}
               />
             </Form.Group>
-            
+
             <Form.Group md="4" className="mb-3">
               <Form.Label>Numero de contacto</Form.Label>
               <Form.Control
@@ -114,6 +123,38 @@ function Registro() {
                 value={Usuario.celular}
                 name="celular"
                 placeholder="Ingrese su numero de contacto..."
+                onChange={handleOnChange}
+              />
+            </Form.Group>
+
+            <Form.Group md="4" className="mb-3">
+              <Form.Label>Tipo de documento</Form.Label>
+              <Form.Control
+                required
+                as="select"
+                name="tipoDocumento"
+                onChange={handleOnChange}
+              >
+                <option readOnly disabled>
+                  Selecciona tu tipo de documento
+                </option>
+                {
+                TIPOS_DE_DNI.map(tipo => {
+                  return <>
+                   <option value={tipo} key={() => getKeyFromValue(tipo)}> {tipo}</option>
+                  </>
+                })}
+              </Form.Control>
+            </Form.Group>
+            
+            <Form.Group md="4" className="mb-3">
+              <Form.Label>Numero de documento</Form.Label>
+              <Form.Control
+                required
+                type="text"
+                value={Usuario.documento}
+                name="documento"
+                placeholder="Ingrese su numero de documento..."
                 onChange={handleOnChange}
               />
             </Form.Group>
@@ -154,6 +195,6 @@ function Registro() {
       </Row>
     </Container>
   );
-};
+}
 
 export default Registro;

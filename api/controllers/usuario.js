@@ -154,7 +154,6 @@ const updateUsuario = async (req, res) => {
 };
 
 const checkUsuario = async (req, res) => {
-  console.log(req.body);
   passport.authenticate("local", { session: false }, (error, usuario, info) => {
     if (error || !usuario) {
         return res.status(400).json({
@@ -167,7 +166,7 @@ const checkUsuario = async (req, res) => {
         res.send(error);
       }
       const token = jwt.sign(usuario, process.env.JWT_TOKEN);
-      return res.json({ token });
+      return res.json({ token , dato: usuario  });
     });
   })(req, res);
 };
