@@ -52,7 +52,7 @@ function Registro() {
     if (validEmail) {
       const URL = "http://localhost:5000/api/v1/estudiantes";
       axios.post(URL, Usuario).then((resp) => {
-        console.log("usuario creado");
+        console.log("Estudiante creado");
         return resp.status;
       });
     }
@@ -68,7 +68,7 @@ function Registro() {
     validateEmail();
     const status = register();
     if (status.valueOf(201)) {
-      console.log("estudiante creado con exito");
+      console.log("Proceso exitoso");
       //navigate("/", { replace: true});
     }
   };
